@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:52:23 by vegret            #+#    #+#             */
-/*   Updated: 2022/11/25 14:58:28 by vegret           ###   ########.fr       */
+/*   Updated: 2022/11/25 17:52:49 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ static unsigned int	parse_color(char *line, int *i)
 	if (line[*i] != ',')
 		return (0);
 	(*i)++;
+	color = 0;
 	return (color);
 }
 
@@ -75,10 +76,10 @@ static t_list	*parse_line(char *line, int x)
 		new = new_point();
 		if (!new)
 			return (ft_lstclear(&points, &free), NULL);
-		((t_point *) points->content)->x = x;
-		((t_point *) points->content)->y = y;
-		((t_point *) points->content)->z = parse_coords(line, &i);
-		((t_point *) points->content)->color = parse_color(line, &i);
+		((t_point *) new->content)->x = x;
+		((t_point *) new->content)->y = y;
+		((t_point *) new->content)->z = parse_coords(line, &i);
+		((t_point *) new->content)->color = parse_color(line, &i);
 		ft_lstadd_front(&points, new);
 		y++;
 	}
@@ -105,5 +106,6 @@ t_list	*parse_map(int fd)
 		line = get_next_line(fd);
 		x++;
 	}
+	
 	return (map);
 }
