@@ -6,7 +6,7 @@ LIBFT		= libft
 SRC_DIR		= sources/
 OBJ_DIR		= objects/
 CC			= cc
-CFLAGS		= -Wall -Werror -Wextra
+CFLAGS		= -Wall -Wextra
 RM			= rm -f
 
 # Colors
@@ -23,7 +23,7 @@ WHITE		=	\033[0;97m
 
 # Sources
 
-SRC_FILES	=	fdf parser
+SRC_FILES	=	fdf parser utils
 
 
 SRC 		= 	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))

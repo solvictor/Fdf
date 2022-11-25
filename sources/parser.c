@@ -6,24 +6,31 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:52:23 by vegret            #+#    #+#             */
-/*   Updated: 2022/11/25 17:52:49 by vegret           ###   ########.fr       */
+/*   Updated: 2022/11/26 00:02:14 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static t_list	*new_point(void)
+static unsigned int	parse_color(char *str, int *i)
 {
-	t_point	*point;
+	unsigned int	color;
 
-	point = malloc(sizeof(t_point));
-	if (!point)
-		return (NULL);
-	point->x = 0;
-	point->y = 0;
-	point->z = 0;
-	point->color = 0x00FFFFFF;
-	return (ft_lstnew(point));
+	if (str[*i] != ',')
+		return (0);
+	(*i) += 3;
+	color = 0;
+	while ((str[*i] >= '0' && str[*i] <= '9')
+		|| (str[*i] >= 'A' && str[*i] <= 'F'))
+	{
+		color = color * 16 + str[*i];
+		if (str[*i] >= '0' && str[*i] <= '9')
+			color -= '0';
+		else
+			color -= 'A' - 10;
+		(*i)++;
+	}
+	return (color);
 }
 
 static int	parse_coords(char *str, int *i)
@@ -46,66 +53,54 @@ static int	parse_coords(char *str, int *i)
 	return (result * sign);
 }
 
-static unsigned int	parse_color(char *line, int *i)
+static int	parse_line(char *line, int x, t_points	**map, t_points	**prev)
 {
-	unsigned int	color;
-
-	if (line[*i] != ',')
-		return (0);
-	(*i)++;
-	color = 0;
-	return (color);
-}
-
-static t_list	*parse_line(char *line, int x)
-{
-	t_list	*points;
-	t_list	*new;
-	int		i;
-	int		y;
+	t_points	*new;
+	int			i;
+	int			y;
 
 	i = 0;
 	y = 0;
-	points = NULL;
-	while (line[i])
+	while (line[i] != '\n' && line[i])
 	{
 		while (line[i] == ' ')
 			i++;
-		if (!line[i])
+		if (line[i] == '\n' || !line[i])
 			break ;
-		new = new_point();
+		new = new_point(x, y);
 		if (!new)
-			return (ft_lstclear(&points, &free), NULL);
-		((t_point *) new->content)->x = x;
-		((t_point *) new->content)->y = y;
-		((t_point *) new->content)->z = parse_coords(line, &i);
-		((t_point *) new->content)->color = parse_color(line, &i);
-		ft_lstadd_front(&points, new);
+			return (pointsclear(map), 0);
+		new->content.z = parse_coords(line, &i);
+		new->content.color = parse_color(line, &i);
+		if (*prev)
+			(*prev)->next = new;
+		else
+			*map = new;
+		*prev = new;
 		y++;
 	}
-	return (points);
+	return (1);
 }
 
-t_list	*parse_map(int fd)
+t_points	*parse_map(int fd)
 {
-	t_list	*map;
-	t_list	*curr;
-	char	*line;
-	int		x;
+	t_points	*map;
+	t_points	*prev;
+	char		*line;
+	int			x;
 
 	map = NULL;
+	prev = NULL;
 	x = 0;
 	line = get_next_line(fd);
 	while (line)
 	{
-		curr = parse_line(line, x);
-		if (!curr)
-			return (ft_lstclear(&map, &free), NULL);
-		ft_lstadd_back(&map, curr);
+		line = uppercase(line);
+		if (!parse_line(line, x, &map, &prev))
+			return (NULL);
 		free(line);
 		line = get_next_line(fd);
 		x++;
 	}
-	
 	return (map);
 }
