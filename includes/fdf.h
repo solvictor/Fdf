@@ -6,20 +6,22 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:56 by vegret            #+#    #+#             */
-/*   Updated: 2022/11/25 23:36:50 by vegret           ###   ########.fr       */
+/*   Updated: 2022/11/26 00:50:02 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 
-# define HEXVALS ""
+# define MLX_WIDTH 800
+# define MLX_HEIGHT 600
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h> 
 # include "libft.h"
+# include "mlx.h"
 
 /*
 x: Line

@@ -3,6 +3,7 @@
 NAME		= fdf
 INCLUDE		= includes
 LIBFT		= libft
+MINILIBX	= minilibx-linux
 SRC_DIR		= sources/
 OBJ_DIR		= objects/
 CC			= cc
@@ -39,14 +40,15 @@ bonus:		all
 
 $(NAME):	$(OBJ)
 			@make -C $(LIBFT) bonus
-			@$(CC) $(OBJ) -L $(LIBFT) -lft -lm -o $@
+			@make -C ${MINILIBX}
+			@$(CC) $(OBJ) -L $(LIBFT) -L $(MINILIBX) -lX11 -lXext  -lmlx -lft -lm -o $@
 			@echo "$(GREEN)Fdf compiled!$(DEF_COLOR)"
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJF)
 			@echo "\033[1A                                                     "
 			@echo -n "\033[1A"
 			@echo "$(YELLOW)Compiling: $< $(DEF_COLOR)"
-			@$(CC) $(CFLAGS) -I $(INCLUDE) -I $(LIBFT) -c $< -o $@
+			@$(CC) $(CFLAGS) -I $(INCLUDE) -I $(LIBFT) -I $(MINILIBX) -c $< -o $@
 
 $(OBJF):
 			@mkdir -p $(OBJ_DIR)

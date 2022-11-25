@@ -6,12 +6,12 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:15 by vegret            #+#    #+#             */
-/*   Updated: 2022/11/26 00:10:47 by vegret           ###   ########.fr       */
+/*   Updated: 2022/11/26 00:48:29 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
 #include <stdio.h>
+#include "fdf.h"
 
 //static void	printtest(t_point content)
 //{
@@ -43,6 +43,8 @@ Makefile
 int	main(int argc, char const *argv[])
 {
 	int			fd;
+	void		*id;
+	void		*window;
 	t_points	*points;
 
 	if (argc != 2)
@@ -51,7 +53,11 @@ int	main(int argc, char const *argv[])
 	points = parse_map(fd);
 	if (!points)
 		return (1);
+	
+	id = mlx_init();
+	window = mlx_new_window(id, MLX_WIDTH, MLX_HEIGHT, "Sdf");
+	mlx_loop(id);
 	//lstiter(points, printtest);
-	pointsclear(&points);
+	//pointsclear(&points);
 	return (0);
 }
