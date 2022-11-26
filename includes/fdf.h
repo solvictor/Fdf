@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:56 by vegret            #+#    #+#             */
-/*   Updated: 2022/11/26 16:12:31 by vegret           ###   ########.fr       */
+/*   Updated: 2022/11/26 18:12:27 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # define MLX_WIDTH				800
 # define MLX_HEIGHT				600
 # define DEFAULT_POINT_COLOR	0x00FFFFFF
-# define DISTANCE				25
 # define M_PI					3.141592653589793
 # include <stdlib.h>
 # include <stdio.h>
