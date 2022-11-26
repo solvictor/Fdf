@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 23:17:51 by vegret            #+#    #+#             */
-/*   Updated: 2022/11/25 23:36:36 by vegret           ###   ########.fr       */
+/*   Updated: 2022/11/26 04:26:51 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,17 @@ void	pointsclear(t_points **lst)
 		tmp = (*lst)->next;
 		free(*lst);
 		*lst = tmp;
+	}
+}
+
+void	lstiter(t_points *lst, void (*f)(t_point content))
+{
+	if (!f)
+		return ;
+	while (lst)
+	{
+		(*f)(lst->content);
+		lst = lst->next;
 	}
 }
 
@@ -53,4 +64,14 @@ char	*uppercase(char *str)
 		i++;
 	}
 	return (str);
+}
+
+int	exit_fdf(void *p)
+{
+	t_vars	*vars;
+
+	vars = (t_vars *) p;
+	pointsclear(&vars->points);
+	mlx_destroy_window(vars->mlx, vars->win);
+	exit(0);
 }

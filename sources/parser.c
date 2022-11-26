@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:52:23 by vegret            #+#    #+#             */
-/*   Updated: 2022/11/26 00:02:14 by vegret           ###   ########.fr       */
+/*   Updated: 2022/11/26 07:28:16 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static unsigned int	parse_color(char *str, int *i)
 	unsigned int	color;
 
 	if (str[*i] != ',')
-		return (0);
+		return (DEFAULT_POINT_COLOR);
 	(*i) += 3;
 	color = 0;
 	while ((str[*i] >= '0' && str[*i] <= '9')
