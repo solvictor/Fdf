@@ -64,11 +64,11 @@ $(OBJF):
 			@mkdir -p $(OBJ_DIR)
 
 clean:
-			@$(RM) -rf $(OBJ_DIR)
+			@$(RM) -r $(OBJ_DIR)
 			@echo "$(BLUE)libft object files cleaned!$(DEF_COLOR)"
 
 fclean:		clean
-			@$(RM) -f $(NAME)
+			@$(RM) $(NAME)
 			@echo "$(CYAN)libft executable files cleaned!$(DEF_COLOR)"
 
 re:			fclean all

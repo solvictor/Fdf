@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:52:23 by vegret            #+#    #+#             */
-/*   Updated: 2022/11/26 07:28:16 by vegret           ###   ########.fr       */
+/*   Updated: 2022/11/26 16:07:36 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ static int	parse_line(char *line, int x, t_points	**map, t_points	**prev)
 		new = new_point(x, y);
 		if (!new)
 			return (pointsclear(map), 0);
-		new->content.z = parse_coords(line, &i);
-		new->content.color = parse_color(line, &i);
+		new->data.z = parse_coords(line, &i);
+		new->data.color = parse_color(line, &i);
 		if (*prev)
 			(*prev)->next = new;
 		else

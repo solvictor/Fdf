@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 23:17:51 by vegret            #+#    #+#             */
-/*   Updated: 2022/11/26 04:26:51 by vegret           ###   ########.fr       */
+/*   Updated: 2022/11/26 16:10:53 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ void	pointsclear(t_points **lst)
 	}
 }
 
-void	lstiter(t_points *lst, void (*f)(t_point content))
+void	lstiter(t_points *lst, void (*f)(t_point))
 {
 	if (!f)
 		return ;
 	while (lst)
 	{
-		(*f)(lst->content);
+		(*f)(lst->data);
 		lst = lst->next;
 	}
 }
@@ -44,10 +44,10 @@ t_points	*new_point(int x, int y)
 	new = malloc(sizeof(t_points));
 	if (!new)
 		return (NULL);
-	new->content.x = x;
-	new->content.y = y;
-	new->content.z = 0;
-	new->content.color = 0x00FFFFFF;
+	new->data.x = x;
+	new->data.y = y;
+	new->data.z = 0;
+	new->data.color = 0x00FFFFFF;
 	new->next = NULL;
 	return (new);
 }

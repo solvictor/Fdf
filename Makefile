@@ -9,6 +9,7 @@ OBJ_DIR		= objects/
 CC			= cc
 CFLAGS		= -Wall -Wextra
 RM			= rm -f
+SMAKE		= make --no-print-directory
 
 # Colors
 
@@ -39,8 +40,8 @@ all:		$(NAME)
 bonus:		all
 
 $(NAME):	$(OBJ)
-			@make -C $(LIBFT) bonus
-			@make -C ${MINILIBX}
+			@$(SMAKE) -C $(LIBFT) bonus
+			@$(SMAKE) -C ${MINILIBX}
 			@$(CC) $(OBJ) -L $(LIBFT) -L $(MINILIBX) -lX11 -lXext  -lmlx -lft -lm -o $@
 			@echo "$(GREEN)Fdf compiled!$(DEF_COLOR)"
 
@@ -54,15 +55,15 @@ $(OBJF):
 			@mkdir -p $(OBJ_DIR)
 
 clean:
-			@$(RM) -rf $(OBJ_DIR)
-			@make -C $(LIBFT) clean
+			@$(RM) -r $(OBJ_DIR)
 			@echo "$(BLUE)Fdf object files cleaned!$(DEF_COLOR)"
 
 fclean:		clean
-			@$(RM) -f $(NAME)
-			@$(RM) -f $(LIBFT)/libft.a
+			@$(RM) $(NAME)
+			@$(RM) $(MINILIBX)/minilibx.a
+			@$(SMAKE) -C $(LIBFT) fclean
+			@echo "$(CYAN)minilibx executable files cleaned!$(DEF_COLOR)"
 			@echo "$(CYAN)Fdf executable files cleaned!$(DEF_COLOR)"
-			@echo "$(CYAN)libft executable files cleaned!$(DEF_COLOR)"
 
 re:			fclean all
 			@echo "$(GREEN)Cleaned and rebuilt everything for Fdf!$(DEF_COLOR)"
