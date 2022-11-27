@@ -6,7 +6,7 @@ LIBFT		= libft
 MINILIBX	= minilibx-linux
 SRC_DIR		= sources/
 OBJ_DIR		= objects/
-CC			= clang
+CC			= cc
 CFLAGS		= -Wall -Wextra
 RM			= rm -f
 SMAKE		= make --no-print-directory
@@ -71,4 +71,4 @@ re:			fclean all
 norm:
 			@norminette $(SRC) $(INCLUDE) $(LIBFT) | grep -v Norme -B1 || true
 
-.PHONY:		all clean fclean re norm
+.PHONY:		all clean fclean re norm home
