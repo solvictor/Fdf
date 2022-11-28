@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 03:59:00 by vegret            #+#    #+#             */
-/*   Updated: 2022/11/26 09:12:35 by vegret           ###   ########.fr       */
+/*   Updated: 2022/11/28 02:19:13 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,5 @@ int	mouse_listener(int button, int x, int y, void *p)
 
 	vars = (t_vars *) p;
 	printf("MOUSE\nbutton: %d x: %d y: %d\n\n", button, x, y);
-	//if (button == Button1)
-	//	mlx_pixel_put(vars->mlx, vars->win, x, y, 0xffffff);
 	return (0);
 }

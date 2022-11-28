@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 23:17:51 by vegret            #+#    #+#             */
-/*   Updated: 2022/11/26 16:10:53 by vegret           ###   ########.fr       */
+/*   Updated: 2022/11/28 02:13:09 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_points	*new_point(int x, int y)
 	new->data.x = x;
 	new->data.y = y;
 	new->data.z = 0;
-	new->data.color = 0x00FFFFFF;
+	new->data.color = DEFAULT_POINT_COLOR;
 	new->next = NULL;
 	return (new);
 }
