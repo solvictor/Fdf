@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:56 by vegret            #+#    #+#             */
-/*   Updated: 2022/11/26 18:12:27 by vegret           ###   ########.fr       */
+/*   Updated: 2022/11/29 00:33:51 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # define MLX_WIDTH				800
 # define MLX_HEIGHT				600
 # define DEFAULT_POINT_COLOR	0x00FFFFFF
-# define M_PI					3.141592653589793
 # include <stdlib.h>
 # include <stdio.h>
 # include <math.h>
@@ -53,7 +52,7 @@ typedef struct s_vars {
 
 t_points	*parse_map(int fd);
 t_points	*new_point(int x, int y);
-void		lstiter(t_points *lst, void (*f)(t_point));
+void		lstiter(t_points *lst, void (*f)(t_point *));
 void		pointsclear(t_points **lst);
 char		*uppercase(char *str);
 int			exit_fdf(void *p);

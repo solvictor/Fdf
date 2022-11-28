@@ -6,104 +6,81 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:15 by vegret            #+#    #+#             */
-/*   Updated: 2022/11/28 02:55:35 by vegret           ###   ########.fr       */
+/*   Updated: 2022/11/29 00:33:12 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static int	get_x(t_point point)
-{
-	double	x;
-	double	a;
-	double	s;
-
-	s = 1;
-	a = 0.8944;
-	x = (point.x - point.z) * a * s;
-	return ((int) round(x));
-}
-
-static int	get_y(t_point point)
-{
-	double	y;
-	double	a;
-	double	b;
-
-	b = M_PI / 4;
-	a = M_PI / 4;
-	y = (point.x + point.z) * 0.4472;
-	return ((int) round(y));
-}
-
-#define DISTANCE 25
-
-static void	link_points(int x1, int y1, int x2, int y2, t_vars *vars)
+static void	link_points(int x0, int y0, int x1, int y1, t_vars *vars)
 {
 	int	dx;
 	int	dy;
-	int	x;
-	int	y;
-	int	eps;
+	int	sx;
+	int	sy;
+	int	e2;
+	int	err;
 
-	dx = x2 - x1;
-	dy = y2 - y1;
-	y = y1;
-	x = x1;
-	eps = 0;
-	while (x <= x2)
+	dx = abs(x1 - x0);
+	dy = -abs(y1 - y0);
+	sx = x0 < x1 ? 1 : -1;
+	sy = y0 < y1 ? 1 : -1;
+	err = dx + dy;
+	while (1)
 	{
-		mlx_pixel_put(vars->mlx, vars->win, x, y, DEFAULT_POINT_COLOR);
-		eps += dy;
-		if ((eps << 1) >= dx)
+		mlx_pixel_put(vars->mlx, vars->win, x0, y0, DEFAULT_POINT_COLOR);
+		if (x0 == x1 && y0 == y1)
+			break ;
+		e2 = 2 * err;
+		if (e2 >= dy)
 		{
-			y++;
-			eps -= dx;
+			err += dy;
+			x0 += sx;
 		}
-		x++;
+		if (e2 <= dx)
+		{
+			err += dx;
+			y0 += sy;
+		}
 	}
+}
+
+#define MIN_X 40
+#define MIN_Y 40
+#define DISTANCE 25
+
+void	calibrate(t_point *point)
+{
+	point->x = point->x * DISTANCE + MIN_X;
+	point->y = point->y * DISTANCE + MIN_Y;
+}
+static void	printtest(t_point *content)
+{
+	printf(
+		"x: %d y: %d z: %d color: %x\n",
+		content->x,
+		content->y,
+		content->z,
+		content->color);
 }
 
 static int	putpoints(t_vars *vars)
 {
 	t_points	*point;
-	int			x;
-	int			y;
-	int			x2;
-	int			y2;
 
+	lstiter(vars->points, &calibrate);
+	lstiter(vars->points, &printtest);
 	point = vars->points;
-	int min_x = 40;
-	int min_y = 40;
 	while (point)
 	{
-		//x = get_x(point->data);
-		//y = get_y(point->data);
-		x = point->data.x + (x * DISTANCE) + min_x;
-		y = point->data.y + (y * DISTANCE) + min_y;
-		if (point->next)
-		{
-			x2 = point->next->data.x;
-			y2 = point->next->data.y;
-			x2 += x2 * DISTANCE;
-			y2 += y2 * DISTANCE;
-			link_points(x, y, x2 + min_x, y2 + min_y, vars);
-		}
-		//mlx_pixel_put(vars->mlx, vars->win, x + (x * DISTANCE) + min_x, y + (y * DISTANCE) + min_y, point->data.color);
+		mlx_pixel_put(vars->mlx, vars->win, point->data.x, point->data.y, DEFAULT_POINT_COLOR);
+		if (point->next && point->next->data.x == point->data.x)
+			link_points(point->next->data.x, point->next->data.y, point->data.x, point->data.y, vars);
 		point = point->next;
 	}
 	return (0);
 }
 
-//static void	printtest(t_point content)
-//{
-//	printf(
-//		"x: %d y: %d z: %d color: %x\n",
-//		content.x,
-//		content.y,
-//		content.z,
-//		content.color);
-//}
 
 /* TODO
 Makefile
@@ -129,12 +106,8 @@ int	main(int argc, char *argv[])
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, MLX_WIDTH, MLX_HEIGHT, "Fdf vegret");
 	putpoints(&vars);
-	//t_point a = {MLX_WIDTH / 2, MLX_HEIGHT / 2, 0};
-	//t_point b = {MLX_WIDTH, MLX_HEIGHT, 0};
-	//link_points(a, b, &vars);
-
 	mlx_key_hook(vars.win, &key_listener, &vars);
-	mlx_hook(vars.win, DestroyNotify, StructureNotifyMask, &exit_fdf, &vars);
+	mlx_hook(vars.win, DestroyNotify, NoEventMask, &exit_fdf, &vars);
 	mlx_mouse_hook(vars.win, &mouse_listener, &vars);
 	mlx_loop(vars.mlx);
 	return (0);
