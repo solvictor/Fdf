@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 23:17:51 by vegret            #+#    #+#             */
-/*   Updated: 2022/11/29 00:33:37 by vegret           ###   ########.fr       */
+/*   Updated: 2022/11/30 14:45:50 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ t_points	*new_point(int x, int y)
 	new->data.x = x;
 	new->data.y = y;
 	new->data.z = 0;
+	new->data.basex = x;
+	new->data.basey = y;
 	new->data.color = DEFAULT_POINT_COLOR;
 	new->next = NULL;
 	return (new);
@@ -73,5 +75,5 @@ int	exit_fdf(void *p)
 	vars = (t_vars *) p;
 	pointsclear(&vars->points);
 	mlx_destroy_window(vars->mlx, vars->win);
-	exit(0);
+	exit(EXIT_SUCCESS);
 }

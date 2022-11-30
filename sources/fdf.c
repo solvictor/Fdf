@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:15 by vegret            #+#    #+#             */
-/*   Updated: 2022/11/29 17:56:53 by vegret           ###   ########.fr       */
+/*   Updated: 2022/11/30 15:46:11 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,22 +45,32 @@ static void	link_points(int x0, int y0, int x1, int y1, t_vars *vars)
 	}
 }
 
-#define MIN_X 300
-#define MIN_Y 300
+#define MIN_X 100
+#define MIN_Y 500
 #define DISTANCE 20
 
 void	calibrate(t_point *point)
 {
-	point->x = point->x * DISTANCE + MIN_X;
-	point->y = point->y * DISTANCE + MIN_Y;
+	const int	oldx = point->x;
+	const int	oldy = point->y;
+
+	point->x = oldx * DISTANCE + MIN_X;
+	point->y = oldy * DISTANCE + MIN_Y;
+}
+
+void	addz(t_point *point)
+{
+	point->y -= point->z * DISTANCE;
 }
 
 static void	printtest(t_point *content)
 {
 	printf(
-		"x: %d y: %d z: %d color: %x\n",
+		"x: %d (%d) y: %d (%d) z: %d color: %x\n",
 		content->x,
+		content->basex,
 		content->y,
+		content->basey,
 		content->z,
 		content->color);
 }
@@ -68,32 +78,31 @@ static void	printtest(t_point *content)
 static void	get_coords(int x0, int y0, t_point *point)
 {
 	point->x = x0 + 0.86602540378 * DISTANCE;
-	point->y = y0 + DISTANCE / 2;
+	point->y = y0 - DISTANCE / 2;
 }
 
-static void	make_x(t_points *points)
+static void	isometrify(t_points *points)
 {
 	t_points	*point;
-	t_points	*tmp;
 	int			x0;
 	int			y0;
-	int			currx;
-	int			i;
+	int			lasty;
+	int			lastx;
 
 	x0 = MIN_X;
-	currx = MIN_X;
+	lastx = MIN_X;
 	y0 = MIN_Y;
+	lasty = MIN_Y;
 	point = points;
-	i = 1;
 	while (point)
 	{
 		get_coords(x0, y0, point);
-		if (point->next && point->next->data.x != currx)
+		if (point->next && point->next->data.basex != point->data.basex)
 		{
-			currx = point->next->data.x;
-			x0 = MIN_X;
-			y0 = MIN_Y;
-			i++;
+			x0 = lastx + 0.86602540378 * DISTANCE;
+			lastx = x0;
+			y0 = lasty + DISTANCE / 2;
+			lasty = y0;
 		}
 		else
 		{
@@ -110,18 +119,21 @@ static int	putpoints(t_vars *vars)
 	t_points	*tmp;
 
 	lstiter(vars->points, &calibrate);
-	make_x(vars->points);
+	isometrify(vars->points);
 	lstiter(vars->points, &printtest);
+	lstiter(vars->points, &addz);
 	point = vars->points;
 	while (point)
 	{
-		mlx_pixel_put(vars->mlx, vars->win, point->data.x, point->data.y, DEFAULT_POINT_COLOR);
-		//if (point->next /*&& point->next->data.x == point->data.x*/)
+		if (point->data.z)
+			point->data.color = 0x00FF0000;
+		mlx_pixel_put(vars->mlx, vars->win, point->data.x, point->data.y, point->data.color);
+		//if (point->next && point->next->data.basex == point->data.basex)
 		//	link_points(point->next->data.x, point->next->data.y, point->data.x, point->data.y, vars);
 		//tmp = point->next;
 		//while (tmp)
 		//{
-		//	if (tmp->data.y == point->data.y)
+		//	if (tmp->data.basey == point->data.basey)
 		//		link_points(tmp->data.x, tmp->data.y, point->data.x, point->data.y, vars);
 		//	tmp = tmp->next;
 		//}
@@ -132,7 +144,7 @@ static int	putpoints(t_vars *vars)
 
 /* TODO
 Makefile
-- message quand ya nothing to do
+- Message quand ya nothing to do
 - Changer les couleurs
 */
 int	main(int argc, char *argv[])
@@ -156,8 +168,8 @@ int	main(int argc, char *argv[])
 	vars.win = mlx_new_window(vars.mlx, MLX_WIDTH, MLX_HEIGHT, "Fdf vegret");
 	putpoints(&vars);
 	mlx_key_hook(vars.win, &key_listener, &vars);
-	mlx_hook(vars.win, DestroyNotify, NoEventMask, &exit_fdf, &vars);
 	mlx_mouse_hook(vars.win, &mouse_listener, &vars);
+	mlx_hook(vars.win, DestroyNotify, NoEventMask, &exit_fdf, &vars);
 	mlx_loop(vars.mlx);
 	return (0);
 }

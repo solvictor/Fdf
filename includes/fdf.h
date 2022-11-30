@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:56 by vegret            #+#    #+#             */
-/*   Updated: 2022/11/29 00:33:51 by vegret           ###   ########.fr       */
+/*   Updated: 2022/11/30 14:45:50 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ typedef struct s_point {
 	int				x;
 	int				y;
 	int				z;
+	int				basex;
+	int				basey;
 	unsigned int	color;
 }				t_point;
 
