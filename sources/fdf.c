@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:15 by vegret            #+#    #+#             */
-/*   Updated: 2022/11/30 15:46:11 by vegret           ###   ########.fr       */
+/*   Updated: 2022/11/30 17:02:07 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,13 @@
 
 static void	link_points(int x0, int y0, int x1, int y1, t_vars *vars)
 {
-	int	dx;
-	int	dy;
-	int	sx;
-	int	sy;
-	int	e2;
-	int	err;
+	int			e2;
+	int			err;
+	const int	dx = abs(x1 - x0);
+	const int	dy = -abs(y1 - y0);
+	const int	sx = -1 + 2 * (x0 < x1);
+	const int	sy = -1 + 2 * (y0 < y1);
 
-	dx = abs(x1 - x0);
-	dy = -abs(y1 - y0);
-	sx = x0 < x1 ? 1 : -1;
-	sy = y0 < y1 ? 1 : -1;
 	err = dx + dy;
 	while (1)
 	{
@@ -51,11 +47,8 @@ static void	link_points(int x0, int y0, int x1, int y1, t_vars *vars)
 
 void	calibrate(t_point *point)
 {
-	const int	oldx = point->x;
-	const int	oldy = point->y;
-
-	point->x = oldx * DISTANCE + MIN_X;
-	point->y = oldy * DISTANCE + MIN_Y;
+	point->x = point->x * DISTANCE + MIN_X;
+	point->y = point->y * DISTANCE + MIN_Y;
 }
 
 void	addz(t_point *point)
@@ -113,6 +106,17 @@ static void	isometrify(t_points *points)
 	}
 }
 
+static	t_point	*get_point(int x, int y, t_points *list)
+{
+	while (list)
+	{
+		if (list->data.basex == x && list->data.basey == y)
+			return (list);
+		list = list->next;
+	}
+	return (NULL);
+}
+
 static int	putpoints(t_vars *vars)
 {
 	t_points	*point;
@@ -125,24 +129,28 @@ static int	putpoints(t_vars *vars)
 	point = vars->points;
 	while (point)
 	{
-		if (point->data.z)
-			point->data.color = 0x00FF0000;
 		mlx_pixel_put(vars->mlx, vars->win, point->data.x, point->data.y, point->data.color);
-		//if (point->next && point->next->data.basex == point->data.basex)
-		//	link_points(point->next->data.x, point->next->data.y, point->data.x, point->data.y, vars);
-		//tmp = point->next;
-		//while (tmp)
-		//{
-		//	if (tmp->data.basey == point->data.basey)
-		//		link_points(tmp->data.x, tmp->data.y, point->data.x, point->data.y, vars);
-		//	tmp = tmp->next;
-		//}
+		tmp = get_point(point->data.basex + 1, point->data.basey, vars->points);
+		if (tmp)
+			link_points(tmp->data.x, tmp->data.y, point->data.x, point->data.y, vars);
+		tmp = get_point(point->data.basex - 1, point->data.basey, vars->points);
+		if (tmp)
+			link_points(tmp->data.x, tmp->data.y, point->data.x, point->data.y, vars);
+		tmp = get_point(point->data.basex, point->data.basey + 1, vars->points);
+		if (tmp)
+			link_points(tmp->data.x, tmp->data.y, point->data.x, point->data.y, vars);
+		tmp = get_point(point->data.basex, point->data.basey - 1, vars->points);
+		if (tmp)
+			link_points(tmp->data.x, tmp->data.y, point->data.x, point->data.y, vars);
 		point = point->next;
 	}
 	return (0);
 }
 
 /* TODO
+Fdf
+- Computing start position
+
 Makefile
 - Message quand ya nothing to do
 - Changer les couleurs
