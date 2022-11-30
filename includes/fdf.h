@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:56 by vegret            #+#    #+#             */
-/*   Updated: 2022/11/30 16:20:04 by vegret           ###   ########.fr       */
+/*   Updated: 2022/11/30 17:58:01 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,9 @@ typedef struct s_points {
 typedef struct s_vars {
 	void		*mlx;
 	void		*win;
+	int			distance;
+	int			mins[2];
+	int			maxs[2];
 	t_points	*points;
 }				t_vars;
 
