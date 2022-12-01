@@ -6,16 +6,13 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:56 by vegret            #+#    #+#             */
-/*   Updated: 2022/11/30 17:58:01 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/01 22:03:22 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 
-# define MLX_WIDTH				800
-# define MLX_HEIGHT				600
-# define DEFAULT_POINT_COLOR	0x00FFFFFF
 # include <stdlib.h>
 # include <stdio.h>
 # include <math.h>
@@ -26,18 +23,23 @@
 # include "libft.h"
 # include "mlx.h"
 # include "mlx_int.h"
+# define MLX_WIDTH				1600
+# define MLX_HEIGHT				900
+# define DEFAULT_POINT_COLOR	0x00FFFFFF
 
 /*
 x: Line
 y: Column
 z: Height
+dx: Display x
+dy: Display y
 */
 typedef struct s_point {
 	int				x;
 	int				y;
 	int				z;
-	int				basex;
-	int				basey;
+	int				dx;
+	int				dy;
 	unsigned int	color;
 }				t_point;
 
@@ -50,8 +52,10 @@ typedef struct s_vars {
 	void		*mlx;
 	void		*win;
 	int			distance;
-	int			mins[2];
-	int			maxs[2];
+	int			height;
+	int			width;
+	t_point		min;
+	t_point		max;
 	t_points	*points;
 }				t_vars;
 

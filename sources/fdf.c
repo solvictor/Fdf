@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:15 by vegret            #+#    #+#             */
-/*   Updated: 2022/11/30 18:37:49 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/01 22:03:04 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,36 +45,24 @@ static void	link_points(int x0, int y0, int x1, int y1, t_vars *vars)
 #define MIN_Y 500
 #define DISTANCE 20
 
-void	calibrate(t_point *point)
-{
-	point->x = point->x * DISTANCE + MIN_X;
-	point->y = point->y * DISTANCE + MIN_Y;
-}
-
 void	addz(t_point *point)
 {
-	point->y -= point->z * DISTANCE;
+	point->dy -= point->z * DISTANCE;
 }
 
 static void	printtest(t_point *content)
 {
 	printf(
 		"x: %d (%d) y: %d (%d) z: %d color: %x\n",
+		content->dx,
 		content->x,
-		content->basex,
+		content->dy,
 		content->y,
-		content->basey,
 		content->z,
 		content->color);
 }
 
-static void	get_coords(int x0, int y0, t_point *point)
-{
-	point->x = x0 + 0.86602540378 * DISTANCE;
-	point->y = y0 - DISTANCE / 2;
-}
-
-static void	isometrify(t_points *points)
+static void	isometrify(t_points *points, int distance)
 {
 	int	x0;
 	int	y0;
@@ -87,40 +75,63 @@ static void	isometrify(t_points *points)
 	lasty = MIN_Y;
 	while (points)
 	{
-		get_coords(x0, y0, &points->data);
-		if (points->next && points->next->data.basex != points->data.basex)
+		points->data.dx = x0 + 0.86602540378 * distance;
+		points->data.dy = y0 - distance / 2;
+		if (points->next && points->data.x != points->next->data.x)
 		{
-			x0 = lastx + 0.86602540378 * DISTANCE;
-			lastx = x0;
-			y0 = lasty + DISTANCE / 2;
-			lasty = y0;
+			lastx += 0.86602540378 * distance;
+			lasty += distance / 2;
+			x0 = lastx;
+			y0 = lasty;
 		}
 		else
 		{
-			x0 = points->data.x;
-			y0 = points->data.y;
+			x0 = points->data.dx;
+			y0 = points->data.dy;
 		}
 		points = points->next;
 	}
 }
 
-static	t_point	*get_point(int x, int y, t_points *list)
+static t_point	*get_point(int x, int y, t_points *list)
 {
 	while (list)
 	{
-		if (list->data.basex == x && list->data.basey == y)
+		if (list->data.x == x && list->data.y == y)
 			return (&list->data);
 		list = list->next;
 	}
 	return (NULL);
 }
 
+static void	init_extremums(t_vars *vars)
+{
+	t_points	*list;
+
+	vars->min.dx = -1;
+	vars->min.dy = -1;
+	vars->max.dx = -1;
+	vars->max.dy = -1;
+	list = vars->points;
+	while (list)
+	{
+		if (vars->min.dx == -1 || list->data.dx < vars->min.dx)
+			vars->min.dx = list->data.dx;
+		if (vars->min.dy == -1 || list->data.dy < vars->min.dy)
+			vars->min.dy = list->data.dy;
+		if (vars->max.dx == -1 || list->data.dx > vars->max.dx)
+			vars->max.dx = list->data.dx;
+		if (vars->max.dy == -1 || list->data.dy > vars->max.dy)
+			vars->max.dy = list->data.dy;
+		list = list->next;
+	}
+}
+
 static void	compute_points(t_vars *vars)
 {
-	lstiter(vars->points, &calibrate);
-	isometrify(vars->points);
-	//lstiter(vars->points, &printtest);
-	lstiter(vars->points, &addz);
+	isometrify(vars->points, vars->distance);
+	lstiter(vars->points, &addz); // trouver un autre moyen d'ajouter z
+	init_extremums(vars);
 }
 
 static int	putpoints(t_vars *vars)
@@ -128,25 +139,78 @@ static int	putpoints(t_vars *vars)
 	t_points	*point;
 	t_point		*tmp;
 
-	compute_points(vars);
 	point = vars->points;
 	while (point)
 	{
-		mlx_pixel_put(vars->mlx, vars->win, point->data.x, point->data.y, point->data.color);
-		tmp = get_point(point->data.basex + 1, point->data.basey, vars->points);
+		mlx_pixel_put(
+			vars->mlx,
+			vars->win,
+			point->data.dx,
+			point->data.dy,
+			point->data.color);
+		tmp = get_point(point->data.x + 1, point->data.y, vars->points);
 		if (tmp)
-			link_points(tmp->x, tmp->y, point->data.x, point->data.y, vars);
-		tmp = get_point(point->data.basex, point->data.basey + 1, vars->points);
+			link_points(tmp->dx, tmp->dy, point->data.dx, point->data.dy, vars);
+		tmp = get_point(point->data.x, point->data.y + 1, vars->points);
 		if (tmp)
-			link_points(tmp->x, tmp->y, point->data.x, point->data.y, vars);
+			link_points(tmp->dx, tmp->dy, point->data.dx, point->data.dy, vars);
 		point = point->next;
 	}
 	return (0);
 }
 
+static int	fdf_open(int argc, char *argv[])
+{
+	int	fd;
+
+	if (argc != 2)
+	{
+		ft_putstr_fd("Usage : ", 1);
+		ft_putstr_fd(argv[0], 1);
+		ft_putendl_fd(" <filename>", 1);
+		exit(EXIT_FAILURE);
+	}
+	fd = open(argv[1], O_RDONLY);
+	if (fd == -1)
+	{
+		ft_putstr_fd("No file ", 1);
+		ft_putendl_fd(argv[1], 1);
+		exit(EXIT_FAILURE);
+	}
+	return (fd);
+}
+
+static void	fdf_init(int fd, t_vars *vars)
+{
+	vars->points = parse_map(fd);
+	if (!vars->points)
+		(ft_putendl_fd("No data found.", 1), exit(EXIT_FAILURE));
+	vars->distance = 20;
+	vars->width = MLX_WIDTH;
+	vars->height = MLX_HEIGHT;
+	compute_points(vars);
+	vars->mlx = mlx_init();
+	if (!vars->mlx)
+		(ft_putendl_fd("MLX initialization failed.", 1), exit(EXIT_FAILURE));
+	vars->win = mlx_new_window(
+			vars->mlx,
+			vars->width,
+			vars->height,
+			"Fdf vegret");
+	if (!vars->win)
+		(ft_putendl_fd("Window creation failed.", 1), exit(EXIT_FAILURE));
+}
+
+static void	setup_hooks(t_vars *vars)
+{
+	mlx_key_hook(vars->win, &key_listener, vars);
+	mlx_mouse_hook(vars->win, &mouse_listener, vars);
+	mlx_hook(vars->win, DestroyNotify, NoEventMask, &exit_fdf, vars);
+}
+
 /* TODO
 Fdf
-- Computing start position
+- abs not from math.h? remove all abs if so
 
 Makefile
 - Message quand ya nothing to do
@@ -157,25 +221,12 @@ int	main(int argc, char *argv[])
 	int		fd;
 	t_vars	vars;
 
-	if (argc != 2)
-	{
-		ft_putstr_fd("Usage : ", 1);
-		ft_putstr_fd(argv[0], 1);
-		ft_putendl_fd(" <filename>", 1);
-		return (1);
-	}
-	// Check if path endswith .fdf
-	fd = open(argv[1], O_RDONLY);
-	vars.points = parse_map(fd);
-	if (!vars.points)
-		return (1);
-	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, MLX_WIDTH, MLX_HEIGHT, "Fdf vegret");
-	vars.distance = 20;
+	fd = fdf_open(argc, argv);
+	fdf_init(fd, &vars);
+	mlx_pixel_put(vars.mlx, vars.win, vars.min.dx, vars.min.dy, 0x00FF0000);
+	mlx_pixel_put(vars.mlx, vars.win, vars.max.dx, vars.max.dy, 0x00FF0000);
+	setup_hooks(&vars);
 	putpoints(&vars);
-	mlx_key_hook(vars.win, &key_listener, &vars);
-	mlx_mouse_hook(vars.win, &mouse_listener, &vars);
-	mlx_hook(vars.win, DestroyNotify, NoEventMask, &exit_fdf, &vars);
 	mlx_loop(vars.mlx);
-	return (0);
+	return (EXIT_SUCCESS);
 }
