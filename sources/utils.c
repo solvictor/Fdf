@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 23:17:51 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/01 22:03:50 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/03 00:34:43 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,11 @@ t_points	*new_point(int x, int y)
 	new = malloc(sizeof(t_points));
 	if (!new)
 		return (NULL);
-	new->data.dx = x;
-	new->data.dy = y;
-	new->data.z = 0;
 	new->data.x = x;
 	new->data.y = y;
+	new->data.z = 0;
+	new->data.dx = x;
+	new->data.dy = y;
 	new->data.color = DEFAULT_POINT_COLOR;
 	new->next = NULL;
 	return (new);

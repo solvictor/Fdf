@@ -6,25 +6,39 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:15 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/01 22:03:04 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/03 00:38:50 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void	link_points(int x0, int y0, int x1, int y1, t_vars *vars)
+static void	link_points(t_point *src, t_point *dst, t_vars *vars)
 {
-	int			e2;
-	int			err;
-	const int	dx = abs(x1 - x0);
-	const int	dy = -abs(y1 - y0);
-	const int	sx = -1 + 2 * (x0 < x1);
-	const int	sy = -1 + 2 * (y0 < y1);
+	int				e2;
+	int				err;
+	int				dx;
+	int				dy;
+	int				sx;
+	int				sy;
+	int				x0;
+	int				y0;
+	int				x1;
+	int				y1;
+	unsigned int	color;
 
+	x0 = src->dx;
+	y0 = src->dy;
+	x1 = dst->dx;
+	y1 = dst->dy;
+	color = src->color;
+	dx = abs(x1 - x0);
+	dy = -abs(y1 - y0);
+	sx = -1 + 2 * (x0 < x1);
+	sy = -1 + 2 * (y0 < y1);
 	err = dx + dy;
 	while (1)
 	{
-		mlx_pixel_put(vars->mlx, vars->win, x0, y0, DEFAULT_POINT_COLOR);
+		mlx_pixel_put(vars->mlx, vars->win, x0, y0, color);
 		if (x0 == x1 && y0 == y1)
 			break ;
 		e2 = 2 * err;
@@ -127,13 +141,6 @@ static void	init_extremums(t_vars *vars)
 	}
 }
 
-static void	compute_points(t_vars *vars)
-{
-	isometrify(vars->points, vars->distance);
-	lstiter(vars->points, &addz); // trouver un autre moyen d'ajouter z
-	init_extremums(vars);
-}
-
 static int	putpoints(t_vars *vars)
 {
 	t_points	*point;
@@ -142,18 +149,12 @@ static int	putpoints(t_vars *vars)
 	point = vars->points;
 	while (point)
 	{
-		mlx_pixel_put(
-			vars->mlx,
-			vars->win,
-			point->data.dx,
-			point->data.dy,
-			point->data.color);
 		tmp = get_point(point->data.x + 1, point->data.y, vars->points);
 		if (tmp)
-			link_points(tmp->dx, tmp->dy, point->data.dx, point->data.dy, vars);
+			link_points(tmp, point, vars);
 		tmp = get_point(point->data.x, point->data.y + 1, vars->points);
 		if (tmp)
-			link_points(tmp->dx, tmp->dy, point->data.dx, point->data.dy, vars);
+			link_points(tmp, point, vars);
 		point = point->next;
 	}
 	return (0);
@@ -188,7 +189,9 @@ static void	fdf_init(int fd, t_vars *vars)
 	vars->distance = 20;
 	vars->width = MLX_WIDTH;
 	vars->height = MLX_HEIGHT;
-	compute_points(vars);
+	isometrify(vars->points, vars->distance);
+	lstiter(vars->points, &addz); // trouver un autre moyen d'ajouter z
+	init_extremums(vars);
 	vars->mlx = mlx_init();
 	if (!vars->mlx)
 		(ft_putendl_fd("MLX initialization failed.", 1), exit(EXIT_FAILURE));
@@ -228,5 +231,6 @@ int	main(int argc, char *argv[])
 	setup_hooks(&vars);
 	putpoints(&vars);
 	mlx_loop(vars.mlx);
+	exit_fdf(&vars);
 	return (EXIT_SUCCESS);
 }
