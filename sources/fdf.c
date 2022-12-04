@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:15 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/03 00:38:50 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/04 23:46:48 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ static void	link_points(t_point *src, t_point *dst, t_vars *vars)
 {
 	int				e2;
 	int				err;
-	int				dx;
-	int				dy;
-	int				sx;
-	int				sy;
 	int				x0;
 	int				y0;
 	int				x1;
 	int				y1;
+	int				dx;
+	int				dy;
+	int				sx;
+	int				sy;
 	unsigned int	color;
 
 	x0 = src->dx;
@@ -59,8 +59,10 @@ static void	link_points(t_point *src, t_point *dst, t_vars *vars)
 #define MIN_Y 500
 #define DISTANCE 20
 
-void	addz(t_point *point)
+void	corrector(t_point *point)
 {
+	point->dy += MIN_Y;
+	point->dx += MIN_X;
 	point->dy -= point->z * DISTANCE;
 }
 
@@ -74,37 +76,6 @@ static void	printtest(t_point *content)
 		content->y,
 		content->z,
 		content->color);
-}
-
-static void	isometrify(t_points *points, int distance)
-{
-	int	x0;
-	int	y0;
-	int	lasty;
-	int	lastx;
-
-	x0 = MIN_X;
-	lastx = MIN_X;
-	y0 = MIN_Y;
-	lasty = MIN_Y;
-	while (points)
-	{
-		points->data.dx = x0 + 0.86602540378 * distance;
-		points->data.dy = y0 - distance / 2;
-		if (points->next && points->data.x != points->next->data.x)
-		{
-			lastx += 0.86602540378 * distance;
-			lasty += distance / 2;
-			x0 = lastx;
-			y0 = lasty;
-		}
-		else
-		{
-			x0 = points->data.dx;
-			y0 = points->data.dy;
-		}
-		points = points->next;
-	}
 }
 
 static t_point	*get_point(int x, int y, t_points *list)
@@ -181,6 +152,32 @@ static int	fdf_open(int argc, char *argv[])
 	return (fd);
 }
 
+static void	isometrify(t_points *points, int distance, double angle)
+{
+	t_points	*last_first;
+	t_points	*prec;
+
+	if (!points)
+		return ;
+	last_first = points;
+	prec = points;
+	points = points->next;
+	while (points)
+	{
+		if (prec->data.x != points->data.x)
+		{
+			prec = last_first;
+			last_first = points;
+			points->data.dy = prec->data.dy + sin(angle) * distance;
+		}
+		else
+			points->data.dy = prec->data.dy - sin(angle) * distance;
+		points->data.dx = prec->data.dx + cos(angle) * distance;
+		prec = points;
+		points = points->next;
+	}
+}
+
 static void	fdf_init(int fd, t_vars *vars)
 {
 	vars->points = parse_map(fd);
@@ -189,8 +186,8 @@ static void	fdf_init(int fd, t_vars *vars)
 	vars->distance = 20;
 	vars->width = MLX_WIDTH;
 	vars->height = MLX_HEIGHT;
-	isometrify(vars->points, vars->distance);
-	lstiter(vars->points, &addz); // trouver un autre moyen d'ajouter z
+	isometrify(vars->points, vars->distance, 30 * FDF_PI / 180);
+	lstiter(vars->points, &corrector);
 	init_extremums(vars);
 	vars->mlx = mlx_init();
 	if (!vars->mlx)
@@ -208,12 +205,16 @@ static void	setup_hooks(t_vars *vars)
 {
 	mlx_key_hook(vars->win, &key_listener, vars);
 	mlx_mouse_hook(vars->win, &mouse_listener, vars);
-	mlx_hook(vars->win, DestroyNotify, NoEventMask, &exit_fdf, vars);
+	mlx_hook(vars->win, DestroyNotify, StructureNotifyMask, &exit_fdf, vars);
 }
 
 /* TODO
 Fdf
 - abs not from math.h? remove all abs if so
+- utiliser une image de mlx pour ameliorer les perfs
+- degrade entre les points
+- taille de la fenetre adaptative
+- centrer la figure
 
 Makefile
 - Message quand ya nothing to do
