@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 23:17:51 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/05 17:01:56 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/05 17:42:26 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,14 +74,15 @@ void	clean_exit(t_vars *vars, int status)
 	{
 		if (vars->points)
 			pointsclear(&vars->points);
-		if (vars->img)
-			mlx_destroy_image(vars->mlx, vars->img);
+		if (vars->img.id)
+			mlx_destroy_image(vars->id, vars->img.id);
 		if (vars->win)
-			mlx_destroy_window(vars->mlx, vars->win);
-		if (vars->mlx)
-			mlx_destroy_display(vars->mlx);
-		if (vars->mlx)
-			free(vars->mlx);
+			mlx_destroy_window(vars->id, vars->win);
+		if (vars->id)
+		{
+			mlx_destroy_display(vars->id);
+			free(vars->id);
+		}
 	}
 	exit(status);
 }

@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 03:59:00 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/05 15:59:03 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/05 17:42:26 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,11 @@ int	test_listener(void *p)
 	t_vars	*vars;
 
 	vars = (t_vars *) p;
-	printf("TEST_LISTENER\nMlx: %p Window: %p\n\n", vars->mlx, vars->win);
+	printf("TEST_LISTENER\nMlx: %p Window: %p\n\n", vars->id, vars->win);
 	return (0);
 }
 
+// Button 4 zoom in, 5 zoom out
 int	mouse_listener(int button, int x, int y, void *p)
 {
 	t_vars	*vars;

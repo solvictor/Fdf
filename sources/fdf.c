@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:15 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/05 16:00:32 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/05 18:53:21 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	fdf_open(int argc, char *argv[])
 /* TODO
 Fdf
 - abs not from math.h? remove all abs if so
-- utiliser une image de mlx pour ameliorer les perfs
+- bresenham propre
 - degrade entre les points
 - taille de la fenetre adaptative
 - centrer la figure
@@ -52,9 +52,12 @@ int	main(int argc, char *argv[])
 	t_vars	vars;
 
 	fd = fdf_open(argc, argv);
+	vars.id = NULL;
+	vars.img.id = NULL;
+	vars.win = NULL;
 	fdf_init(fd, &vars);
-	mlx_pixel_put(vars.mlx, vars.win, vars.min.dx, vars.min.dy, 0x00FF0000);
-	mlx_pixel_put(vars.mlx, vars.win, vars.max.dx, vars.max.dy, 0x00FF0000);
+	put_pixel_img(&vars.img, vars.min.dx, vars.min.dy, 0x00FF0000);
+	put_pixel_img(&vars.img, vars.max.dx, vars.max.dy, 0x00FF0000);
 	mlx_key_hook(vars.win, &key_listener, &vars);
 	mlx_mouse_hook(vars.win, &mouse_listener, &vars);
 	mlx_hook(
@@ -63,8 +66,8 @@ int	main(int argc, char *argv[])
 		StructureNotifyMask,
 		&destroy_listener,
 		&vars);
-	putpoints(&vars);
-	mlx_loop(vars.mlx);
+	mlx_put_image_to_window(vars.id, vars.win, vars.img.id, 0, 0);
+	mlx_loop(vars.id);
 	clean_exit(&vars, EXIT_SUCCESS);
 	return (EXIT_SUCCESS);
 }

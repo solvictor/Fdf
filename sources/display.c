@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:07:29 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/05 15:07:55 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/05 18:40:49 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	link_points(t_point *src, t_point *dst, t_vars *vars)
 	err = dx + dy;
 	while (1)
 	{
-		mlx_pixel_put(vars->mlx, vars->win, x0, y0, color);
+		put_pixel_img(&vars->img, x0, y0, color);
 		if (x0 == x1 && y0 == y1)
 			break ;
 		e2 = 2 * err;
@@ -78,7 +78,7 @@ static t_point	*get_point(int x, int y, t_points *list)
 	return (NULL);
 }
 
-int	putpoints(t_vars *vars)
+int	render_points(t_vars *vars)
 {
 	t_points	*point;
 	t_point		*tmp;

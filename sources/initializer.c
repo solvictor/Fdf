@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:02:44 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/05 15:59:20 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/05 18:43:43 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ static int	ft_min(int a, int b)
 
 void	corrector(t_point *point)
 {
-	point->dy += MIN_Y;
 	point->dx += MIN_X;
+	point->dy += MIN_Y;
 	point->dy -= point->z * DISTANCE;
 }
 
@@ -84,20 +84,19 @@ void	fdf_init(int fd, t_vars *vars)
 	if (!vars->points)
 		(ft_putendl_fd("No data found.", 1), clean_exit(vars, 0));
 	vars->distance = 20;
-	isometrify(vars->points, vars->distance, 50 * FDF_PI / 180);
+	isometrify(vars->points, vars->distance, 30 * FDF_PI / 180);
 	lstiter(vars->points, &corrector);
 	init_extremums(vars);
-	vars->mlx = mlx_init();
-	if (!vars->mlx)
+	vars->id = mlx_init();
+	if (!vars->id)
 		(ft_putendl_fd("MLX initialization failed.", 1), clean_exit(vars, 0));
-	mlx_get_screen_size(vars->mlx, &vars->width, &vars->height);
+	mlx_get_screen_size(vars->id, &vars->width, &vars->height);
 	//vars->width = ft_min(abs(vars->max.dx - vars->min.dx) + 3, vars->width);
 	//vars->height = ft_min(abs(vars->max.dy - vars->min.dy) + 3, vars->height);
-	vars->img = mlx_new_image(vars->mlx, vars->width, vars->height);
-	if (!vars->img)
-		(ft_putendl_fd("Image creation failed.", 1), clean_exit(vars, 0));
+	image_init(vars);
+	render_points(vars);
 	vars->win = mlx_new_window(
-			vars->mlx,
+			vars->id,
 			vars->width,
 			vars->height,
 			"Fdf vegret");
