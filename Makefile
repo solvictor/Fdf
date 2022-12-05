@@ -7,7 +7,7 @@ MINILIBX	= minilibx-linux
 SRC_DIR		= sources/
 OBJ_DIR		= objects/
 CC			= cc
-CFLAGS		= -Wall -Wextra
+CFLAGS		= -O2 -Wall -Wextra
 RM			= rm -f
 SMAKE		= make --no-print-directory
 

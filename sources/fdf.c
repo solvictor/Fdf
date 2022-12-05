@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:15 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/05 15:07:49 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/05 16:00:32 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,14 @@ int	main(int argc, char *argv[])
 	mlx_pixel_put(vars.mlx, vars.win, vars.max.dx, vars.max.dy, 0x00FF0000);
 	mlx_key_hook(vars.win, &key_listener, &vars);
 	mlx_mouse_hook(vars.win, &mouse_listener, &vars);
-	mlx_hook(vars.win, DestroyNotify, StructureNotifyMask, &exit_fdf, &vars);
+	mlx_hook(
+		vars.win,
+		DestroyNotify,
+		StructureNotifyMask,
+		&destroy_listener,
+		&vars);
 	putpoints(&vars);
 	mlx_loop(vars.mlx);
-	exit_fdf(&vars);
+	clean_exit(&vars, EXIT_SUCCESS);
 	return (EXIT_SUCCESS);
 }

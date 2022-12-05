@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:56 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/05 15:08:51 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/05 15:59:02 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_points {
 typedef struct s_vars {
 	void		*mlx;
 	void		*win;
+	void		*img;
 	int			distance;
 	int			height;
 	int			width;
@@ -62,10 +63,11 @@ typedef struct s_vars {
 int			test_listener(void *p);
 int			key_listener(int key, void *p);
 int			mouse_listener(int button, int x, int y, void *p);
-int			exit_fdf(void *p);
+int			destroy_listener(void *p);
 int			putpoints(t_vars *vars);
 void		lstiter(t_points *lst, void (*f)(t_point *));
 void		pointsclear(t_points **lst);
+void		clean_exit(t_vars *vars, int status);
 void		fdf_init(int fd, t_vars *vars);
 t_points	*parse_map(int fd);
 t_points	*new_point(int x, int y);
