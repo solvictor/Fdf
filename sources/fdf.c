@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:15 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/04 23:46:48 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/05 13:57:49 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,10 +122,10 @@ static int	putpoints(t_vars *vars)
 	{
 		tmp = get_point(point->data.x + 1, point->data.y, vars->points);
 		if (tmp)
-			link_points(tmp, point, vars);
+			link_points(tmp, &point->data, vars);
 		tmp = get_point(point->data.x, point->data.y + 1, vars->points);
 		if (tmp)
-			link_points(tmp, point, vars);
+			link_points(tmp, &point->data, vars);
 		point = point->next;
 	}
 	return (0);
@@ -215,6 +215,7 @@ Fdf
 - degrade entre les points
 - taille de la fenetre adaptative
 - centrer la figure
+- norme
 
 Makefile
 - Message quand ya nothing to do
