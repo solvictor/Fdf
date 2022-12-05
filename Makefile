@@ -25,7 +25,7 @@ WHITE		=	\033[0;97m
 
 # Sources
 
-SRC_FILES	=	fdf parser listeners utils
+SRC_FILES	=	fdf parser initializer listeners display utils
 
 
 SRC 		= 	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
