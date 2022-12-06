@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 03:59:00 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/06 17:01:02 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/06 18:46:59 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	mouse_listener(int button, int x, int y, void *p)
 	t_vars	*vars;
 
 	vars = (t_vars *) p;
-	if (button == 4)
+	if (button == 4 && vars->distance != __INT_MAX__)
 	{
 		vars->distance++;
 		update_display(vars);

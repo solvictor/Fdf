@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:07:29 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/06 17:08:19 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/06 19:58:03 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,18 +53,6 @@ static void	link_points(t_point *src, t_point *dst, t_vars *vars)
 			y0 += sy;
 		}
 	}
-}
-
-static void	printtest(t_point *content)
-{
-	printf(
-		"x: %d (%d) y: %d (%d) z: %d color: %x\n",
-		content->dx,
-		content->x,
-		content->dy,
-		content->y,
-		content->z,
-		content->color);
 }
 
 static t_point	*get_point(int x, int y, t_points *list)
@@ -159,5 +147,4 @@ void	update_display(t_vars *vars)
 	image_init(vars);
 	render_points(vars);
 	mlx_put_image_to_window(vars->id, vars->win, vars->img.id, 0, 0);
-	ft_putendl_fd("Test", 1);
 }
