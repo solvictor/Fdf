@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:07:29 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/05 18:40:49 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/06 17:08:19 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,4 +95,69 @@ int	render_points(t_vars *vars)
 		point = point->next;
 	}
 	return (0);
+}
+
+void	isometrify(t_points *points, int distance, double angle)
+{
+	t_points	*last_first;
+	t_points	*prec;
+
+	if (!points)
+		return ;
+	last_first = points;
+	prec = points;
+	points = points->next;
+	while (points)
+	{
+		if (prec->data.x != points->data.x)
+		{
+			prec = last_first;
+			last_first = points;
+			points->data.dy = prec->data.dy + sin(angle) * distance;
+		}
+		else
+			points->data.dy = prec->data.dy - sin(angle) * distance;
+		points->data.dx = prec->data.dx + cos(angle) * distance;
+		prec = points;
+		points = points->next;
+	}
+}
+
+// Init extremums and add the z coordinate
+void	init_extremums(t_vars *vars)
+{
+	t_points	*list;
+
+	vars->min.dx = -1;
+	vars->min.dy = -1;
+	vars->max.dx = -1;
+	vars->max.dy = -1;
+	list = vars->points;
+	while (list)
+	{
+		list->data.dy -= list->data.z * vars->distance;
+		if (vars->min.dx == -1 || list->data.dx < vars->min.dx)
+			vars->min.dx = list->data.dx;
+		if (vars->min.dy == -1 || list->data.dy < vars->min.dy)
+			vars->min.dy = list->data.dy;
+		if (vars->max.dx == -1 || list->data.dx > vars->max.dx)
+			vars->max.dx = list->data.dx;
+		if (vars->max.dy == -1 || list->data.dy > vars->max.dy)
+			vars->max.dy = list->data.dy;
+		list = list->next;
+	}
+}
+
+void	update_display(t_vars *vars)
+{
+	if (!vars->id)
+		return ;
+	if (vars->img.id)
+		mlx_destroy_image(vars->id, vars->img.id);
+	isometrify(vars->points, vars->distance, 30 * FDF_PI / 180);
+	init_extremums(vars);
+	image_init(vars);
+	render_points(vars);
+	mlx_put_image_to_window(vars->id, vars->win, vars->img.id, 0, 0);
+	ft_putendl_fd("Test", 1);
 }

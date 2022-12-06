@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 23:17:51 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/05 17:42:26 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/06 14:42:03 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,6 @@ void	pointsclear(t_points **lst)
 		tmp = (*lst)->next;
 		free(*lst);
 		*lst = tmp;
-	}
-}
-
-void	lstiter(t_points *lst, void (*f)(t_point *))
-{
-	if (!f)
-		return ;
-	while (lst)
-	{
-		(*f)(&lst->data);
-		lst = lst->next;
 	}
 }
 
