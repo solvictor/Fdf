@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:02:44 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/07 15:18:26 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/07 18:29:53 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static int	ft_min(int a, int b)
 	return (b);
 }
 
-// Init extremums and add the z coordinate
 void	extremums_init(t_vars *vars)
 {
 	t_points	*list;
@@ -43,6 +42,20 @@ void	extremums_init(t_vars *vars)
 	}
 }
 
+void	image_init(t_vars *vars)
+{
+	vars->img.width = vars->width;
+	vars->img.height = vars->height;
+	vars->img.id = mlx_new_image(vars->id, vars->img.width, vars->img.height);
+	if (!vars->img.id)
+		(ft_putendl_fd("Image creation failed.", 1), clean_exit(vars, 0));
+	vars->img.data = mlx_get_data_addr(
+			vars->img.id,
+			&vars->img.bpp,
+			&vars->img.line_size,
+			&vars->img.endian);
+}
+
 void	init_fdf(int fd, t_vars *vars)
 {
 	vars->points = parse_map(fd);
@@ -50,6 +63,7 @@ void	init_fdf(int fd, t_vars *vars)
 	if (!vars->points)
 		(ft_putendl_fd("No data found.", 1), clean_exit(vars, 0));
 	vars->distance = 20;
+	vars->zoom = 1;
 	vars->id = mlx_init();
 	if (!vars->id)
 		(ft_putendl_fd("MLX initialization failed.", 1), clean_exit(vars, 0));
@@ -57,7 +71,7 @@ void	init_fdf(int fd, t_vars *vars)
 	vars->win = mlx_new_window(
 			vars->id,
 			vars->width,
-			vars->height,
+			vars->height - 140,
 			"Fdf vegret");
 	if (!vars->win)
 		(ft_putendl_fd("Window creation failed.", 1), clean_exit(vars, 0));

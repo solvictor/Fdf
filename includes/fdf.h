@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:56 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/07 14:45:38 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/07 19:01:43 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,31 +60,29 @@ typedef struct s_fdf_img {
 typedef struct s_vars {
 	void		*id;
 	void		*win;
-	int			distance;
-	int			height;
+	double		zoom;
 	int			width;
+	int			height;
+	int			distance;
 	t_point		min;
 	t_point		max;
 	t_fdf_img	img;
 	t_points	*points;
 }				t_vars;
 
-int			test_listener(void *p);
+char		*uppercase(char *str);
+t_points	*parse_map(int fd);
+t_points	*new_point(int x, int y);
+int			ft_abs(int n);
 int			key_listener(int key, void *p);
 int			mouse_listener(int button, int x, int y, void *p);
 int			destroy_listener(void *p);
-int			render_points(t_vars *vars);
-int			ft_abs(int n);
-void		pointsclear(t_points **lst);
-void		clean_exit(t_vars *vars, int status);
-void		init_fdf(int fd, t_vars *vars);
-t_points	*parse_map(int fd);
-t_points	*new_point(int x, int y);
-char		*uppercase(char *str);
 void		image_init(t_vars *vars);
-void		update_display(t_vars *vars);
-void		isometrify(t_points *points, int distance, double angle);
+void		pointsclear(t_points **lst);
 void		extremums_init(t_vars *vars);
+void		update_display(t_vars *vars);
+void		init_fdf(int fd, t_vars *vars);
+void		clean_exit(t_vars *vars, int status);
 void		put_pixel_img(t_fdf_img *img, int x, int y, unsigned int color);
 
 #endif

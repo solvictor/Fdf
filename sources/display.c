@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:07:29 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/07 15:38:56 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/07 19:23:54 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,13 @@ static t_point	*get_point(int x, int y, t_points *list)
 	return (NULL);
 }
 
-int	render_points(t_vars *vars)
+static int	out_window(t_point *p1, t_point *p2, t_vars *vars)
+{
+	return ((p1->dx > vars->img.width && p2->dx > vars->img.width)
+		|| (p1->dy > vars->img.height && p2->dy > vars->img.height));
+}
+
+static int	render_points(t_vars *vars)
 {
 	t_points	*point;
 	t_point		*tmp;
@@ -75,17 +81,17 @@ int	render_points(t_vars *vars)
 	while (point)
 	{
 		tmp = get_point(point->data.x + 1, point->data.y, point->next);
-		if (tmp)
+		if (tmp && !out_window(tmp, &point->data, vars))
 			link_points(tmp, &point->data, vars);
 		tmp = get_point(point->data.x, point->data.y + 1, point->next);
-		if (tmp)
+		if (tmp && !out_window(tmp, &point->data, vars))
 			link_points(tmp, &point->data, vars);
 		point = point->next;
 	}
 	return (0);
 }
 
-void	isometrify(t_points *points, int distance, double angle)
+static void	isometrify(t_points *points, int distance, double angle)
 {
 	t_points	*last_first;
 	t_points	*prec;
@@ -111,19 +117,6 @@ void	isometrify(t_points *points, int distance, double angle)
 	}
 }
 
-void	center(t_vars *vars)
-{
-	t_points	*point;
-
-	point = vars->points;
-	while (point)
-	{
-		point->data.dx += -vars->min.dx;
-		point->data.dy += -vars->min.dy;
-		point = point->next;
-	}
-}
-
 void	addz(t_vars *vars)
 {
 	t_points	*point;
@@ -131,13 +124,27 @@ void	addz(t_vars *vars)
 	point = vars->points;
 	while (point)
 	{
-		point->data.dy -= point->data.z * vars->distance;
+		point->data.dy -= point->data.z * vars->distance * vars->zoom;
 		point = point->next;
 	}
 }
 
-#define MIN_X 1
-#define MIN_Y 331
+void	center(t_vars *vars)
+{
+	t_points	*point;
+	int			x;
+	int			y;
+
+	x = (vars->width - vars->max.dx + vars->min.dx) / 2 - vars->min.dx;
+	y = (vars->height - vars->max.dy + vars->min.dy) / 2 - vars->min.dy;
+	point = vars->points;
+	while (point)
+	{
+		point->data.dx += x;
+		point->data.dy += y;
+		point = point->next;
+	}
+}
 
 // First point is start
 void	update_display(t_vars *vars)
@@ -146,14 +153,11 @@ void	update_display(t_vars *vars)
 		return ;
 	if (vars->img.id)
 		mlx_destroy_image(vars->id, vars->img.id);
-	isometrify(vars->points, vars->distance, 30 * FDF_PI / 180);
+	isometrify(vars->points, vars->distance * vars->zoom, 30 * FDF_PI / 180);
 	addz(vars);
 	extremums_init(vars);
 	center(vars);
-	extremums_init(vars);
 	image_init(vars);
 	render_points(vars);
-	put_pixel_img(&vars->img, vars->min.dx, vars->min.dy, 0x00FF0000);
-	put_pixel_img(&vars->img, vars->max.dx, vars->max.dy, 0x00FF0000);
 	mlx_put_image_to_window(vars->id, vars->win, vars->img.id, 0, 0);
 }
