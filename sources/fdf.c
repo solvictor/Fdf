@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:15 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/06 17:45:14 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/07 14:15:36 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ int	main(int argc, char *argv[])
 	vars.img.id = NULL;
 	vars.win = NULL;
 	init_fdf(fd, &vars);
-	put_pixel_img(&vars.img, vars.min.dx, vars.min.dy, 0x00FF0000);
-	put_pixel_img(&vars.img, vars.max.dx, vars.max.dy, 0x00FF0000);
 	mlx_key_hook(vars.win, &key_listener, &vars);
 	mlx_mouse_hook(vars.win, &mouse_listener, &vars);
 	mlx_hook(

@@ -6,11 +6,18 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 23:17:51 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/06 14:42:03 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/07 13:47:05 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+int	ft_abs(int n)
+{
+	if (n < 0)
+		return (-n);
+	return (n);
+}
 
 void	pointsclear(t_points **lst)
 {

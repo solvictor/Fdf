@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 18:10:34 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/05 18:41:50 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/07 14:52:07 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 void	image_init(t_vars *vars)
 {
+	//vars->img.width = ft_abs(vars->max.dx - vars->min.dx) + 2;
+	//vars->img.height = ft_abs(vars->max.dy - vars->min.dy) + 2;
+	//printf("Width: %d Height: %d\n\n", vars->img.width, vars->img.height);
 	vars->img.width = vars->width;
 	vars->img.height = vars->height;
 	vars->img.id = mlx_new_image(vars->id, vars->img.width, vars->img.height);

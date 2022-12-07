@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:07:29 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/06 19:58:03 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/07 15:38:56 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ static void	link_points(t_point *src, t_point *dst, t_vars *vars)
 	x1 = dst->dx;
 	y1 = dst->dy;
 	color = src->color;
-	dx = abs(x1 - x0);
-	dy = -abs(y1 - y0);
+	dx = ft_abs(x1 - x0);
+	dy = -ft_abs(y1 - y0);
 	sx = -1 + 2 * (x0 < x1);
 	sy = -1 + 2 * (y0 < y1);
 	err = dx + dy;
@@ -111,31 +111,35 @@ void	isometrify(t_points *points, int distance, double angle)
 	}
 }
 
-// Init extremums and add the z coordinate
-void	init_extremums(t_vars *vars)
+void	center(t_vars *vars)
 {
-	t_points	*list;
+	t_points	*point;
 
-	vars->min.dx = -1;
-	vars->min.dy = -1;
-	vars->max.dx = -1;
-	vars->max.dy = -1;
-	list = vars->points;
-	while (list)
+	point = vars->points;
+	while (point)
 	{
-		list->data.dy -= list->data.z * vars->distance;
-		if (vars->min.dx == -1 || list->data.dx < vars->min.dx)
-			vars->min.dx = list->data.dx;
-		if (vars->min.dy == -1 || list->data.dy < vars->min.dy)
-			vars->min.dy = list->data.dy;
-		if (vars->max.dx == -1 || list->data.dx > vars->max.dx)
-			vars->max.dx = list->data.dx;
-		if (vars->max.dy == -1 || list->data.dy > vars->max.dy)
-			vars->max.dy = list->data.dy;
-		list = list->next;
+		point->data.dx += -vars->min.dx;
+		point->data.dy += -vars->min.dy;
+		point = point->next;
 	}
 }
 
+void	addz(t_vars *vars)
+{
+	t_points	*point;
+
+	point = vars->points;
+	while (point)
+	{
+		point->data.dy -= point->data.z * vars->distance;
+		point = point->next;
+	}
+}
+
+#define MIN_X 1
+#define MIN_Y 331
+
+// First point is start
 void	update_display(t_vars *vars)
 {
 	if (!vars->id)
@@ -143,8 +147,13 @@ void	update_display(t_vars *vars)
 	if (vars->img.id)
 		mlx_destroy_image(vars->id, vars->img.id);
 	isometrify(vars->points, vars->distance, 30 * FDF_PI / 180);
-	init_extremums(vars);
+	addz(vars);
+	extremums_init(vars);
+	center(vars);
+	extremums_init(vars);
 	image_init(vars);
 	render_points(vars);
+	put_pixel_img(&vars->img, vars->min.dx, vars->min.dy, 0x00FF0000);
+	put_pixel_img(&vars->img, vars->max.dx, vars->max.dy, 0x00FF0000);
 	mlx_put_image_to_window(vars->id, vars->win, vars->img.id, 0, 0);
 }
