@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 03:59:00 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/07 19:25:38 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/08 23:50:13 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,14 @@ int	key_listener(int key, void *p)
 {
 	if (key == XK_Escape)
 		destroy_listener(p);
+	if (key == XK_w)
+		return (0);
+	else if (key == XK_a)
+		return (0);
+	else if (key == XK_s)
+		return (0);
+	else if (key == XK_d)
+		return (0);
 	printf("KEY\n%d (%c)\n\n", key, key);
 	return (0);
 }

@@ -6,51 +6,35 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:07:29 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/07 19:23:54 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/08 23:50:51 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void	link_points(t_point *src, t_point *dst, t_vars *vars)
+static void	link_points(t_point src, t_point dst, t_vars *vars)
 {
 	int				e2;
 	int				err;
-	int				x0;
-	int				y0;
-	int				x1;
-	int				y1;
-	int				dx;
-	int				dy;
-	int				sx;
-	int				sy;
-	unsigned int	color;
+	const int		dx = ft_abs(dst.dx - src.dx);
+	const int		dy = -ft_abs(dst.dy - src.dy);
 
-	x0 = src->dx;
-	y0 = src->dy;
-	x1 = dst->dx;
-	y1 = dst->dy;
-	color = src->color;
-	dx = ft_abs(x1 - x0);
-	dy = -ft_abs(y1 - y0);
-	sx = -1 + 2 * (x0 < x1);
-	sy = -1 + 2 * (y0 < y1);
 	err = dx + dy;
 	while (1)
 	{
-		put_pixel_img(&vars->img, x0, y0, color);
-		if (x0 == x1 && y0 == y1)
+		put_pixel_img(&vars->img, src.dx, src.dy, DEFAULT_POINT_COLOR);
+		if (src.dx == dst.dx && src.dy == dst.dy)
 			break ;
 		e2 = 2 * err;
 		if (e2 >= dy)
 		{
 			err += dy;
-			x0 += sx;
+			src.dx += -1 + 2 * (src.dx < dst.dx);
 		}
 		if (e2 <= dx)
 		{
 			err += dx;
-			y0 += sy;
+			src.dy += -1 + 2 * (src.dy < dst.dy);
 		}
 	}
 }
@@ -82,10 +66,10 @@ static int	render_points(t_vars *vars)
 	{
 		tmp = get_point(point->data.x + 1, point->data.y, point->next);
 		if (tmp && !out_window(tmp, &point->data, vars))
-			link_points(tmp, &point->data, vars);
+			link_points(*tmp, point->data, vars);
 		tmp = get_point(point->data.x, point->data.y + 1, point->next);
 		if (tmp && !out_window(tmp, &point->data, vars))
-			link_points(tmp, &point->data, vars);
+			link_points(*tmp, point->data, vars);
 		point = point->next;
 	}
 	return (0);
