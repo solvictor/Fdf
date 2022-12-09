@@ -6,11 +6,22 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:07:29 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/08 23:50:51 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/09 16:54:41 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+static unsigned int	get_color(t_point *src, t_point *dst)
+{
+	const unsigned int	color = 0;
+	const int			n = ft_abs(src->color - dst->color);
+
+	if (src->color == dst->color)
+		return (src->color);
+	
+	return (color);
+}
 
 static void	link_points(t_point src, t_point dst, t_vars *vars)
 {
@@ -22,7 +33,7 @@ static void	link_points(t_point src, t_point dst, t_vars *vars)
 	err = dx + dy;
 	while (1)
 	{
-		put_pixel_img(&vars->img, src.dx, src.dy, DEFAULT_POINT_COLOR);
+		put_pixel_img(&vars->img, src.dx, src.dy, get_color(&src, &dst));
 		if (src.dx == dst.dx && src.dy == dst.dy)
 			break ;
 		e2 = 2 * err;
@@ -39,23 +50,6 @@ static void	link_points(t_point src, t_point dst, t_vars *vars)
 	}
 }
 
-static t_point	*get_point(int x, int y, t_points *list)
-{
-	while (list)
-	{
-		if (list->data.x == x && list->data.y == y)
-			return (&list->data);
-		list = list->next;
-	}
-	return (NULL);
-}
-
-static int	out_window(t_point *p1, t_point *p2, t_vars *vars)
-{
-	return ((p1->dx > vars->img.width && p2->dx > vars->img.width)
-		|| (p1->dy > vars->img.height && p2->dy > vars->img.height));
-}
-
 static int	render_points(t_vars *vars)
 {
 	t_points	*point;
@@ -65,10 +59,10 @@ static int	render_points(t_vars *vars)
 	while (point)
 	{
 		tmp = get_point(point->data.x + 1, point->data.y, point->next);
-		if (tmp && !out_window(tmp, &point->data, vars))
+		if (tmp)
 			link_points(*tmp, point->data, vars);
 		tmp = get_point(point->data.x, point->data.y + 1, point->next);
-		if (tmp && !out_window(tmp, &point->data, vars))
+		if (tmp)
 			link_points(*tmp, point->data, vars);
 		point = point->next;
 	}
@@ -113,14 +107,12 @@ void	addz(t_vars *vars)
 	}
 }
 
-void	center(t_vars *vars)
+void	center(t_vars *vars, int x, int y)
 {
 	t_points	*point;
-	int			x;
-	int			y;
 
-	x = (vars->width - vars->max.dx + vars->min.dx) / 2 - vars->min.dx;
-	y = (vars->height - vars->max.dy + vars->min.dy) / 2 - vars->min.dy;
+	x = x + (-vars->max.dx + vars->min.dx) / 2 - vars->min.dx;
+	y = y + (-vars->max.dy + vars->min.dy) / 2 - vars->min.dy;
 	point = vars->points;
 	while (point)
 	{
@@ -140,8 +132,9 @@ void	update_display(t_vars *vars)
 	isometrify(vars->points, vars->distance * vars->zoom, 30 * FDF_PI / 180);
 	addz(vars);
 	extremums_init(vars);
-	center(vars);
+	center(vars, vars->center.dx, vars->center.dy);
 	image_init(vars);
 	render_points(vars);
 	mlx_put_image_to_window(vars->id, vars->win, vars->img.id, 0, 0);
+	display_controls(vars);
 }

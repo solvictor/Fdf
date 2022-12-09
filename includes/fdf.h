@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:56 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/07 19:01:43 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/09 16:32:29 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct s_vars {
 	int			distance;
 	t_point		min;
 	t_point		max;
+	t_point		center;
 	t_fdf_img	img;
 	t_points	*points;
 }				t_vars;
@@ -73,6 +74,7 @@ typedef struct s_vars {
 char		*uppercase(char *str);
 t_points	*parse_map(int fd);
 t_points	*new_point(int x, int y);
+t_point		*get_point(int x, int y, t_points *list);
 int			ft_abs(int n);
 int			key_listener(int key, void *p);
 int			mouse_listener(int button, int x, int y, void *p);
@@ -82,6 +84,7 @@ void		pointsclear(t_points **lst);
 void		extremums_init(t_vars *vars);
 void		update_display(t_vars *vars);
 void		init_fdf(int fd, t_vars *vars);
+void		display_controls(t_vars *vars);
 void		clean_exit(t_vars *vars, int status);
 void		put_pixel_img(t_fdf_img *img, int x, int y, unsigned int color);
 

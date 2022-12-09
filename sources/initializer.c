@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:02:44 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/07 18:29:53 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/09 13:53:42 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ void	init_fdf(int fd, t_vars *vars)
 			vars->width,
 			vars->height - 140,
 			"Fdf vegret");
+	vars->center.dx = vars->width / 2;
+	vars->center.dy = vars->height / 2;
 	if (!vars->win)
 		(ft_putendl_fd("Window creation failed.", 1), clean_exit(vars, 0));
 	update_display(vars);

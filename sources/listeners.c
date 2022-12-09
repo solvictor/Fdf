@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 03:59:00 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/08 23:50:13 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/09 16:50:25 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,23 @@
 
 int	key_listener(int key, void *p)
 {
+	t_vars	*vars;
+
+	vars = (t_vars *) p;
 	if (key == XK_Escape)
 		destroy_listener(p);
-	if (key == XK_w)
-		return (0);
-	else if (key == XK_a)
-		return (0);
-	else if (key == XK_s)
-		return (0);
-	else if (key == XK_d)
-		return (0);
+	if (key == XK_w || key == XK_a || key == XK_s || key == XK_d)
+	{
+		if (key == XK_w)
+			vars->center.dy -= 20;
+		if (key == XK_a)
+			vars->center.dx -= 20;
+		if (key == XK_s)
+			vars->center.dy += 20;
+		if (key == XK_d)
+			vars->center.dx += 20;
+		update_display(vars);
+	}
 	printf("KEY\n%d (%c)\n\n", key, key);
 	return (0);
 }
