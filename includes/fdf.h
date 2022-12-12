@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:56 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/09 16:32:29 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/12 14:56:17 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include "mlx.h"
 # include "mlx_int.h"
 # define DEFAULT_POINT_COLOR	0x00FFFFFF
-# define FDF_PI					3.14159265358979323846
+# define DISTANCE 20
 
 /*
 x: Line
@@ -61,9 +61,9 @@ typedef struct s_vars {
 	void		*id;
 	void		*win;
 	double		zoom;
+	int			rotation;
 	int			width;
 	int			height;
-	int			distance;
 	t_point		min;
 	t_point		max;
 	t_point		center;

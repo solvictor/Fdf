@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:02:44 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/09 13:53:42 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/12 14:44:01 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ void	init_fdf(int fd, t_vars *vars)
 	close(fd);
 	if (!vars->points)
 		(ft_putendl_fd("No data found.", 1), clean_exit(vars, 0));
-	vars->distance = 20;
 	vars->zoom = 1;
+	vars->rotation = 0;
 	vars->id = mlx_init();
 	if (!vars->id)
 		(ft_putendl_fd("MLX initialization failed.", 1), clean_exit(vars, 0));

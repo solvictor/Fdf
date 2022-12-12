@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:07:29 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/09 16:54:41 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/12 14:57:00 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static unsigned int	get_color(t_point *src, t_point *dst)
 	if (src->color == dst->color)
 		return (src->color);
 	
-	return (color);
+	return (src->color);
 }
 
 static void	link_points(t_point src, t_point dst, t_vars *vars)
@@ -69,7 +69,7 @@ static int	render_points(t_vars *vars)
 	return (0);
 }
 
-static void	isometrify(t_points *points, int distance, double angle)
+static void	isometrify(t_points *points, double distance, double angle)
 {
 	t_points	*last_first;
 	t_points	*prec;
@@ -102,7 +102,7 @@ void	addz(t_vars *vars)
 	point = vars->points;
 	while (point)
 	{
-		point->data.dy -= point->data.z * vars->distance * vars->zoom;
+		point->data.dy -= point->data.z * DISTANCE * vars->zoom;
 		point = point->next;
 	}
 }
@@ -122,6 +122,23 @@ void	center(t_vars *vars, int x, int y)
 	}
 }
 
+void	rotate(t_points *points, t_point *center, double angle)
+{
+	double	x;
+	double	y;
+
+	while (points)
+	{
+		x = points->data.dx;
+		y = points->data.dy;
+		points->data.dx = (x - center->dx) * cos(angle)
+			- (y - center->dy) * sin(angle) + center->dx;
+		points->data.dy = (x - center->dx) * sin(angle)
+			+ (y - center->dy) * cos(angle) + center->dy;
+		points = points->next;
+	}
+}
+
 // First point is start
 void	update_display(t_vars *vars)
 {
@@ -129,7 +146,8 @@ void	update_display(t_vars *vars)
 		return ;
 	if (vars->img.id)
 		mlx_destroy_image(vars->id, vars->img.id);
-	isometrify(vars->points, vars->distance * vars->zoom, 30 * FDF_PI / 180);
+	isometrify(vars->points, DISTANCE * vars->zoom, 30 * M_PI / 180);
+	rotate(vars->points, &vars->center, vars->rotation * M_PI / 180);
 	addz(vars);
 	extremums_init(vars);
 	center(vars, vars->center.dx, vars->center.dy);
