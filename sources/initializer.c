@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:02:44 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/13 11:06:08 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/13 22:19:58 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,39 +56,26 @@ void	image_init(t_vars *vars)
 			&vars->img.endian);
 }
 
-void	assign_nexts(t_points *points)
-{
-	while (points)
-	{
-		points->nextx = get_point(
-				points->data.x + 1,
-				points->data.y,
-				points->next);
-		points->nexty = get_point(
-				points->data.x,
-				points->data.y + 1,
-				points->next);
-		points = points->next;
-	}
-}
-
 void	init_fdf(int fd, t_vars *vars)
 {
 	vars->points = parse_map(fd);
 	close(fd);
-	assign_nexts(vars->points);
 	if (!vars->points)
 		(ft_putendl_fd("No data found.", 1), clean_exit(vars, 0));
 	vars->zoom = 1;
 	vars->rotation = 0;
+	vars->id = NULL;
+	vars->img.id = NULL;
+	vars->win = NULL;
 	vars->id = mlx_init();
 	if (!vars->id)
 		(ft_putendl_fd("MLX initialization failed.", 1), clean_exit(vars, 0));
 	mlx_get_screen_size(vars->id, &vars->width, &vars->height);
+	vars->height -= 140;
 	vars->win = mlx_new_window(
 			vars->id,
 			vars->width,
-			vars->height - 140,
+			vars->height,
 			"Fdf vegret");
 	vars->center.dx = vars->width / 2;
 	vars->center.dy = vars->height / 2;

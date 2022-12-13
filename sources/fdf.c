@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:15 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/12 14:43:42 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/13 22:19:42 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,7 @@ static int	fdf_open(int argc, char *argv[])
 /* TODO
 Fdf
 - abs not from math.h? remove all abs if so
-- bresenham propre
 - degrade entre les points
-- taille de la fenetre adaptative
-- centrer la figure
 - norme
 
 Makefile
@@ -52,9 +49,6 @@ int	main(int argc, char *argv[])
 	t_vars	vars;
 
 	fd = fdf_open(argc, argv);
-	vars.id = NULL;
-	vars.img.id = NULL;
-	vars.win = NULL;
 	init_fdf(fd, &vars);
 	mlx_mouse_hook(vars.win, &mouse_listener, &vars);
 	mlx_hook(vars.win,

@@ -6,11 +6,37 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 03:59:00 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/13 18:17:27 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/13 22:19:50 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+static void	handle_move(int key, t_vars *vars)
+{
+	if (key == XK_w)
+		vars->center.dy -= 20;
+	else if (key == XK_a)
+		vars->center.dx -= 20;
+	else if (key == XK_s)
+		vars->center.dy += 20;
+	else if (key == XK_d)
+		vars->center.dx += 20;
+	else if (key == XK_r)
+	{
+		vars->rotation += 2;
+		if (vars->rotation == 360)
+			vars->rotation = 0;
+	}
+	else if (key == XK_p)
+	{
+		//vars->projection;
+		update_display(vars);
+	}
+	else
+		return ;
+	update_display(vars);
+}
 
 int	key_listener(int key, void *p)
 {
@@ -19,30 +45,7 @@ int	key_listener(int key, void *p)
 	vars = (t_vars *) p;
 	if (key == XK_Escape)
 		destroy_listener(p);
-	if (key == XK_w || key == XK_a || key == XK_s || key == XK_d)
-	{
-		if (key == XK_w)
-			vars->center.dy -= 20;
-		if (key == XK_a)
-			vars->center.dx -= 20;
-		if (key == XK_s)
-			vars->center.dy += 20;
-		if (key == XK_d)
-			vars->center.dx += 20;
-		update_display(vars);
-	}
-	if (key == XK_r)
-	{
-		vars->rotation += 2;
-		if (vars->rotation == 360)
-			vars->rotation = 0;
-		update_display(vars);
-	}
-	if (key == XK_p)
-	{
-		//vars->projection;
-		update_display(vars);
-	}
+	handle_move(key, vars);
 	printf("KEY\n%d (%c)\n\n", key, key);
 	return (0);
 }

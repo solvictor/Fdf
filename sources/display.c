@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:07:29 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/13 16:37:11 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/13 22:19:29 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ static void	isometric(t_points *points, double distance, double angle)
 	}
 }
 
-void	addz(t_vars *vars)
+static void	addz(t_vars *vars)
 {
 	t_points	*point;
 
@@ -107,38 +107,6 @@ void	addz(t_vars *vars)
 	}
 }
 
-void	center(t_vars *vars, int x, int y)
-{
-	t_points	*point;
-
-	x = x + (-vars->max.dx + vars->min.dx) / 2 - vars->min.dx;
-	y = y + (-vars->max.dy + vars->min.dy) / 2 - vars->min.dy;
-	point = vars->points;
-	while (point)
-	{
-		point->data.dx += x;
-		point->data.dy += y;
-		point = point->next;
-	}
-}
-
-void	rotate(t_points *points, t_point *center, double angle)
-{
-	double	x;
-	double	y;
-
-	while (points)
-	{
-		x = points->data.dx;
-		y = points->data.dy;
-		points->data.dx = (x - center->dx) * cos(angle)
-			- (y - center->dy) * sin(angle) + center->dx;
-		points->data.dy = (x - center->dx) * sin(angle)
-			+ (y - center->dy) * cos(angle) + center->dy;
-		points = points->next;
-	}
-}
-
 // First point is start
 void	update_display(t_vars *vars)
 {
@@ -146,7 +114,6 @@ void	update_display(t_vars *vars)
 		return ;
 	if (vars->img.id)
 		mlx_destroy_image(vars->id, vars->img.id);
-	
 	isometric(vars->points, DISTANCE * vars->zoom, 30 * M_PI / 180);
 	rotate(vars->points, &vars->center, vars->rotation * M_PI / 180);
 	addz(vars);

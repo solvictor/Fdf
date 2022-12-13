@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:52:23 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/07 13:48:48 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/13 22:20:04 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,25 +82,42 @@ static int	parse_line(char *line, int x, t_points	**map, t_points	**prev)
 	return (1);
 }
 
+static void	assign_nexts(t_points *points)
+{
+	while (points)
+	{
+		points->nextx = get_point(
+				points->data.x + 1,
+				points->data.y,
+				points->next);
+		points->nexty = get_point(
+				points->data.x,
+				points->data.y + 1,
+				points->next);
+		points = points->next;
+	}
+}
+
 t_points	*parse_map(int fd)
 {
-	t_points	*map;
+	t_points	*points;
 	t_points	*prev;
 	char		*line;
 	int			x;
 
 	x = 0;
-	map = NULL;
+	points = NULL;
 	prev = NULL;
 	line = get_next_line(fd);
 	while (line)
 	{
 		line = uppercase(line);
-		if (!parse_line(line, x, &map, &prev))
+		if (!parse_line(line, x, &points, &prev))
 			return (NULL);
 		free(line);
 		line = get_next_line(fd);
 		x++;
 	}
-	return (map);
+	assign_nexts(points);
+	return (points);
 }

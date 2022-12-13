@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:56 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/13 11:05:03 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/13 22:19:20 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,7 @@ void		init_fdf(int fd, t_vars *vars);
 void		display_controls(t_vars *vars);
 void		clean_exit(t_vars *vars, int status);
 void		put_pixel_img(t_fdf_img *img, int x, int y, unsigned int color);
+void		rotate(t_points *points, t_point *center, double angle);
+void		center(t_vars *vars, int x, int y);
 
 #endif
