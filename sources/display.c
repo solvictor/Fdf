@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:07:29 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/12 14:57:00 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/13 11:06:26 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,10 @@ static int	render_points(t_vars *vars)
 	point = vars->points;
 	while (point)
 	{
-		tmp = get_point(point->data.x + 1, point->data.y, point->next);
+		tmp = point->nextx;
 		if (tmp)
 			link_points(*tmp, point->data, vars);
-		tmp = get_point(point->data.x, point->data.y + 1, point->next);
+		tmp = point->nexty;
 		if (tmp)
 			link_points(*tmp, point->data, vars);
 		point = point->next;

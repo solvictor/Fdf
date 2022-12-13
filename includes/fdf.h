@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:56 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/12 14:56:17 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/13 11:05:03 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ typedef struct s_point {
 
 typedef struct s_points {
 	t_point			data;
+	t_point			*nextx;
+	t_point			*nexty;
 	struct s_points	*next;
 }				t_points;
 

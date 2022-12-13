@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:02:44 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/12 14:44:01 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/13 11:06:08 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,27 @@ void	image_init(t_vars *vars)
 			&vars->img.endian);
 }
 
+void	assign_nexts(t_points *points)
+{
+	while (points)
+	{
+		points->nextx = get_point(
+				points->data.x + 1,
+				points->data.y,
+				points->next);
+		points->nexty = get_point(
+				points->data.x,
+				points->data.y + 1,
+				points->next);
+		points = points->next;
+	}
+}
+
 void	init_fdf(int fd, t_vars *vars)
 {
 	vars->points = parse_map(fd);
 	close(fd);
+	assign_nexts(vars->points);
 	if (!vars->points)
 		(ft_putendl_fd("No data found.", 1), clean_exit(vars, 0));
 	vars->zoom = 1;
