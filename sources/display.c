@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:07:29 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/13 11:06:26 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/13 16:37:11 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static int	render_points(t_vars *vars)
 	return (0);
 }
 
-static void	isometrify(t_points *points, double distance, double angle)
+static void	isometric(t_points *points, double distance, double angle)
 {
 	t_points	*last_first;
 	t_points	*prec;
@@ -146,7 +146,8 @@ void	update_display(t_vars *vars)
 		return ;
 	if (vars->img.id)
 		mlx_destroy_image(vars->id, vars->img.id);
-	isometrify(vars->points, DISTANCE * vars->zoom, 30 * M_PI / 180);
+	
+	isometric(vars->points, DISTANCE * vars->zoom, 30 * M_PI / 180);
 	rotate(vars->points, &vars->center, vars->rotation * M_PI / 180);
 	addz(vars);
 	extremums_init(vars);

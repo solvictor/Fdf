@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 03:59:00 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/12 14:58:44 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/13 18:17:27 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,11 @@ int	key_listener(int key, void *p)
 		vars->rotation += 2;
 		if (vars->rotation == 360)
 			vars->rotation = 0;
+		update_display(vars);
+	}
+	if (key == XK_p)
+	{
+		//vars->projection;
 		update_display(vars);
 	}
 	printf("KEY\n%d (%c)\n\n", key, key);
