@@ -6,18 +6,11 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:02:44 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/13 22:19:58 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/14 00:15:31 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-static int	ft_min(int a, int b)
-{
-	if (a < b)
-		return (a);
-	return (b);
-}
 
 void	extremums_init(t_vars *vars)
 {
