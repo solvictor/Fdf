@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 23:17:51 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/13 11:05:23 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/14 17:47:53 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int	ft_abs(int n)
 	return (n);
 }
 
-void	pointsclear(t_points **lst)
+void	pointsclear(t_point **lst)
 {
-	t_points	*tmp;
+	t_point	*tmp;
 
 	if (!lst || !*lst)
 		return ;
@@ -33,19 +33,19 @@ void	pointsclear(t_points **lst)
 	}
 }
 
-t_points	*new_point(int x, int y)
+t_point	*new_point(int x, int y)
 {
-	t_points	*new;
+	t_point	*new;
 
-	new = malloc(sizeof(t_points));
+	new = malloc(sizeof(t_point));
 	if (!new)
 		return (NULL);
-	new->data.x = x;
-	new->data.y = y;
-	new->data.z = 0;
-	new->data.dx = x;
-	new->data.dy = y;
-	new->data.color = DEFAULT_POINT_COLOR;
+	new->x = x;
+	new->y = y;
+	new->z = 0;
+	new->dx = x;
+	new->dy = y;
+	new->color = DEFAULT_POINT_COLOR;
 	new->nextx = NULL;
 	new->nexty = NULL;
 	new->next = NULL;
@@ -72,6 +72,8 @@ void	clean_exit(t_vars *vars, int status)
 	{
 		if (vars->points)
 			pointsclear(&vars->points);
+		if (vars->title)
+			free(vars->title);
 		if (vars->img.id)
 			mlx_destroy_image(vars->id, vars->img.id);
 		if (vars->win)

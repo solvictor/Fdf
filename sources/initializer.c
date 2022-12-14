@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:02:44 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/14 00:15:31 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/14 18:56:57 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,24 @@
 
 void	extremums_init(t_vars *vars)
 {
-	t_points	*list;
+	t_point	*points;
 
 	vars->min.dx = -1;
 	vars->min.dy = -1;
 	vars->max.dx = -1;
 	vars->max.dy = -1;
-	list = vars->points;
-	while (list)
+	points = vars->points;
+	while (points)
 	{
-		if (vars->min.dx == -1 || list->data.dx < vars->min.dx)
-			vars->min.dx = list->data.dx;
-		if (vars->min.dy == -1 || list->data.dy < vars->min.dy)
-			vars->min.dy = list->data.dy;
-		if (vars->max.dx == -1 || list->data.dx > vars->max.dx)
-			vars->max.dx = list->data.dx;
-		if (vars->max.dy == -1 || list->data.dy > vars->max.dy)
-			vars->max.dy = list->data.dy;
-		list = list->next;
+		if (vars->min.dx == -1 || points->dx < vars->min.dx)
+			vars->min.dx = points->dx;
+		if (vars->min.dy == -1 || points->dy < vars->min.dy)
+			vars->min.dy = points->dy;
+		if (vars->max.dx == -1 || points->dx > vars->max.dx)
+			vars->max.dx = points->dx;
+		if (vars->max.dy == -1 || points->dy > vars->max.dy)
+			vars->max.dy = points->dy;
+		points = points->next;
 	}
 }
 
@@ -49,17 +49,15 @@ void	image_init(t_vars *vars)
 			&vars->img.endian);
 }
 
-void	init_fdf(int fd, t_vars *vars)
+void	fdf_init(int fd, t_vars *vars)
 {
 	vars->points = parse_map(fd);
 	close(fd);
-	if (!vars->points)
+	if (!vars->points || !vars->title)
 		(ft_putendl_fd("No data found.", 1), clean_exit(vars, 0));
 	vars->zoom = 1;
 	vars->rotation = 0;
-	vars->id = NULL;
-	vars->img.id = NULL;
-	vars->win = NULL;
+	vars->projection = new_proj("Isometric)", &project, 30, 30);
 	vars->id = mlx_init();
 	if (!vars->id)
 		(ft_putendl_fd("MLX initialization failed.", 1), clean_exit(vars, 0));
@@ -69,7 +67,7 @@ void	init_fdf(int fd, t_vars *vars)
 			vars->id,
 			vars->width,
 			vars->height,
-			"Fdf vegret");
+			vars->title);
 	vars->center.dx = vars->width / 2;
 	vars->center.dy = vars->height / 2;
 	if (!vars->win)

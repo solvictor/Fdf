@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:15 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/13 22:19:42 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/14 18:19:57 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,11 @@ int	main(int argc, char *argv[])
 	t_vars	vars;
 
 	fd = fdf_open(argc, argv);
-	init_fdf(fd, &vars);
+	vars.id = NULL;
+	vars.img.id = NULL;
+	vars.win = NULL;
+	vars.title = ft_strjoin("Fdf vegret -> ", argv[1]);
+	fdf_init(fd, &vars);
 	mlx_mouse_hook(vars.win, &mouse_listener, &vars);
 	mlx_hook(vars.win,
 		DestroyNotify,

@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:52:23 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/13 22:20:04 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/14 15:02:59 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,11 @@ static int	parse_coords(char *str, int *i)
 	return (result * sign);
 }
 
-static int	parse_line(char *line, int x, t_points	**map, t_points	**prev)
+static int	parse_line(char *line, int x, t_point **map, t_point **prev)
 {
-	t_points	*new;
-	int			i;
-	int			y;
+	t_point	*new;
+	int		i;
+	int		y;
 
 	i = 0;
 	y = 0;
@@ -68,8 +68,8 @@ static int	parse_line(char *line, int x, t_points	**map, t_points	**prev)
 		new = new_point(x, y);
 		if (!new)
 			return (pointsclear(map), 0);
-		new->data.z = parse_coords(line, &i);
-		new->data.color = parse_color(line, &i);
+		new->z = parse_coords(line, &i);
+		new->color = parse_color(line, &i);
 		if (*prev)
 			(*prev)->next = new;
 		else
@@ -82,28 +82,28 @@ static int	parse_line(char *line, int x, t_points	**map, t_points	**prev)
 	return (1);
 }
 
-static void	assign_nexts(t_points *points)
+static void	assign_nexts(t_point *points)
 {
 	while (points)
 	{
 		points->nextx = get_point(
-				points->data.x + 1,
-				points->data.y,
+				points->x + 1,
+				points->y,
 				points->next);
 		points->nexty = get_point(
-				points->data.x,
-				points->data.y + 1,
+				points->x,
+				points->y + 1,
 				points->next);
 		points = points->next;
 	}
 }
 
-t_points	*parse_map(int fd)
+t_point	*parse_map(int fd)
 {
-	t_points	*points;
-	t_points	*prev;
-	char		*line;
-	int			x;
+	t_point	*points;
+	t_point	*prev;
+	char	*line;
+	int		x;
 
 	x = 0;
 	points = NULL;

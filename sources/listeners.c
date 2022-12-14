@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 03:59:00 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/13 22:19:50 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/14 17:58:00 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,7 @@ static void	handle_move(int key, t_vars *vars)
 			vars->rotation = 0;
 	}
 	else if (key == XK_p)
-	{
-		//vars->projection;
-		update_display(vars);
-	}
+		update_projection(vars);
 	else
 		return ;
 	update_display(vars);
