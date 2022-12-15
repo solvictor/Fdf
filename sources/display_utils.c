@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 18:10:34 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/14 18:30:08 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/15 15:37:46 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	show_controls(t_vars *vars)
 	mlx_string_put(vars->id, vars->win, 0, 24, 0x00FFFFFF,
 		"- W A S D, move");
 	mlx_string_put(vars->id, vars->win, 0, 36, 0x00FFFFFF,
-		"- R, rotate");
+		"- L R, rotate");
 	mlx_string_put(vars->id, vars->win, 0, 48, 0x00FFFFFF,
 		"- P, change projection (current: ");
 	mlx_string_put(vars->id, vars->win, 196, 48, 0x00FFFFFF,

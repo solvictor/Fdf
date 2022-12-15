@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:07:29 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/14 18:30:08 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/15 15:49:03 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ static void	addz(t_vars *vars)
 	}
 }
 
-// First point is start
 void	update_display(t_vars *vars)
 {
 	if (!vars->id)

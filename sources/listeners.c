@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 03:59:00 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/15 12:37:24 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/15 15:47:38 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,15 @@ static void	handle_move(int key, t_vars *vars)
 		vars->center.dx += 20;
 	else if (key == XK_r)
 	{
-		vars->rotation += 2;
 		if (vars->rotation == 360)
 			vars->rotation = 0;
+		vars->rotation += 2;
+	}
+	else if (key == XK_l)
+	{
+		if (vars->rotation == 0)
+			vars->rotation = 360;
+		vars->rotation -= 2;
 	}
 	else if (key == XK_p)
 		update_projection(vars);
@@ -43,27 +49,22 @@ int	on_key(int key, void *p)
 	if (key == XK_Escape)
 		on_destroy(p);
 	handle_move(key, vars);
-	printf("KEY\n%d (%c)\n\n", key, key);
 	return (0);
 }
 
-// Button 4 zoom in, 5 zoom out
 int	on_mouse(int button, int x, int y, void *p)
 {
 	t_vars	*vars;
 
+	(void) x, (void) y;
 	vars = (t_vars *) p;
 	if (button == 4 && vars->zoom < 20)
-	{
 		vars->zoom += 0.1;
-		update_display(vars);
-	}
 	else if (button == 5 && vars->zoom > 0.2)
-	{
 		vars->zoom -= 0.1;
-		update_display(vars);
-	}
-	printf("MOUSE\nbutton: %d x: %d y: %d\n\n", button, x, y);
+	else
+		return (0);
+	update_display(vars);
 	return (0);
 }
 
