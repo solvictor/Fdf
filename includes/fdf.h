@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:56 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/15 12:48:44 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/15 12:56:02 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void			center(t_vars *vars, int x, int y);
 /* Initialisers */
 void			image_init(t_vars *vars);
 void			extremums_init(t_vars *vars);
-void			fdf_init(int fd, t_vars *vars);
+void			fdf_init(int fd, char *file_name, t_vars *vars);
 
 /* Listeners */
 int				on_destroy(void *p);

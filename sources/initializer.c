@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:02:44 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/15 12:48:37 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/15 12:56:40 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	image_init(t_vars *vars)
 			&vars->img.endian);
 }
 
-void	fdf_init(int fd, t_vars *vars)
+void	fdf_init(int fd, char *file_name, t_vars *vars)
 {
 	vars->points = parse_map(fd);
 	close(fd);
@@ -65,6 +65,9 @@ void	fdf_init(int fd, t_vars *vars)
 	vars->height -= 140;
 	vars->center.dx = vars->width / 2;
 	vars->center.dy = vars->height / 2;
+	vars->title = ft_strjoin("Fdf vegret -> ", file_name);
+	if (!vars->title)
+		(ft_putendl_fd("Title initialization failed.", 1), clean_exit(vars, 1));
 	vars->win = mlx_new_window(
 			vars->id,
 			vars->width,
