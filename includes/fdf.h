@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:56 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/14 18:56:57 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/15 12:48:44 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,9 @@ void			extremums_init(t_vars *vars);
 void			fdf_init(int fd, t_vars *vars);
 
 /* Listeners */
-int				destroy_listener(void *p);
-int				key_listener(int key, void *p);
-int				mouse_listener(int button, int x, int y, void *p);
+int				on_destroy(void *p);
+int				on_key(int key, void *p);
+int				on_mouse(int button, int x, int y, void *p);
 
 /* Projections stuff */
 void			project(t_vars *vars);

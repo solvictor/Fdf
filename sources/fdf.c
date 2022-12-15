@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:15 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/14 18:19:57 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/15 12:48:32 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,23 +48,17 @@ int	main(int argc, char *argv[])
 	int		fd;
 	t_vars	vars;
 
-	fd = fdf_open(argc, argv);
 	vars.id = NULL;
 	vars.img.id = NULL;
 	vars.win = NULL;
 	vars.title = ft_strjoin("Fdf vegret -> ", argv[1]);
+	if (!vars.title)
+		return (ft_putendl_fd("Title initialization failed.", 1), EXIT_FAILURE);
+	fd = fdf_open(argc, argv);
 	fdf_init(fd, &vars);
-	mlx_mouse_hook(vars.win, &mouse_listener, &vars);
-	mlx_hook(vars.win,
-		DestroyNotify,
-		StructureNotifyMask,
-		&destroy_listener,
-		&vars);
-	mlx_hook(vars.win,
-		KeyPress,
-		KeyPressMask,
-		&key_listener,
-		&vars);
+	mlx_mouse_hook(vars.win, &on_mouse, &vars);
+	mlx_hook(vars.win, DestroyNotify, StructureNotifyMask, &on_destroy, &vars);
+	mlx_hook(vars.win, KeyPress, KeyPressMask, &on_key, &vars);
 	mlx_loop(vars.id);
 	clean_exit(&vars, EXIT_SUCCESS);
 	return (EXIT_SUCCESS);

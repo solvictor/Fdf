@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 03:59:00 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/14 17:58:00 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/15 12:37:24 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,20 +35,20 @@ static void	handle_move(int key, t_vars *vars)
 	update_display(vars);
 }
 
-int	key_listener(int key, void *p)
+int	on_key(int key, void *p)
 {
 	t_vars	*vars;
 
 	vars = (t_vars *) p;
 	if (key == XK_Escape)
-		destroy_listener(p);
+		on_destroy(p);
 	handle_move(key, vars);
 	printf("KEY\n%d (%c)\n\n", key, key);
 	return (0);
 }
 
 // Button 4 zoom in, 5 zoom out
-int	mouse_listener(int button, int x, int y, void *p)
+int	on_mouse(int button, int x, int y, void *p)
 {
 	t_vars	*vars;
 
@@ -67,7 +67,7 @@ int	mouse_listener(int button, int x, int y, void *p)
 	return (0);
 }
 
-int	destroy_listener(void *p)
+int	on_destroy(void *p)
 {
 	clean_exit((t_vars *) p, EXIT_SUCCESS);
 	return (EXIT_SUCCESS);
