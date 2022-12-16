@@ -6,11 +6,12 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 18:10:34 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/15 15:37:46 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/16 18:47:27 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#define WHITE 0x00FFFFFF
 
 void	put_pixel_img(t_fdf_img *img, int x, int y, unsigned int color)
 {
@@ -24,20 +25,16 @@ void	put_pixel_img(t_fdf_img *img, int x, int y, unsigned int color)
 
 void	show_controls(t_vars *vars)
 {
-	mlx_string_put(vars->id, vars->win, 0, 10, 0x00FFFFFF,
-		"Controls:");
-	mlx_string_put(vars->id, vars->win, 0, 12, 0x00FFFFFF,
-		"________");
-	mlx_string_put(vars->id, vars->win, 0, 24, 0x00FFFFFF,
-		"- W A S D, move");
-	mlx_string_put(vars->id, vars->win, 0, 36, 0x00FFFFFF,
-		"- L R, rotate");
-	mlx_string_put(vars->id, vars->win, 0, 48, 0x00FFFFFF,
+	mlx_string_put(vars->id, vars->win, 0, 10, WHITE, "Controls:");
+	mlx_string_put(vars->id, vars->win, 0, 12, WHITE, "________");
+	mlx_string_put(vars->id, vars->win, 0, 24, WHITE, "- W A S D, move");
+	mlx_string_put(vars->id, vars->win, 0, 36, WHITE, "- L R, rotate");
+	mlx_string_put(vars->id, vars->win, 0, 48, WHITE,
+		"- + -, change z axis multiplier");
+	mlx_string_put(vars->id, vars->win, 0, 60, WHITE,
 		"- P, change projection (current: ");
-	mlx_string_put(vars->id, vars->win, 196, 48, 0x00FFFFFF,
-		vars->projection.name);
-	mlx_string_put(vars->id, vars->win, 0, 60, 0x00FFFFFF,
-		"- Mouse wheel, zoom");
+	mlx_string_put(vars->id, vars->win, 196, 60, WHITE, vars->proj.name);
+	mlx_string_put(vars->id, vars->win, 0, 72, WHITE, "- Mouse wheel, zoom");
 }
 
 t_point	*get_point(int x, int y, t_point *points)

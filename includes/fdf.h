@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:56 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/15 16:47:52 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/16 18:55:37 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include "mlx.h"
 # include "mlx_int.h"
 # define DEFAULT_POINT_COLOR	0x00FFFFFF
-# define DISTANCE 20.0
+# define DISTANCE 16.0
 
 /*	t_point:	Stores a point
 
@@ -42,8 +42,8 @@ typedef struct s_point {
 	int				x;
 	int				y;
 	int				z;
-	int				dx;
-	int				dy;
+	double			dx;
+	double			dy;
 	unsigned int	color;
 	struct s_point	*next;
 	struct s_point	*nextx;
@@ -89,6 +89,7 @@ typedef struct s_projection {
 	width:		Window's width
 	height:		Window's height
 	zoom:		Current zoom multiplier
+	zhight:		Current z height multiplier
 	min:		Coordinates of the minimum point
 	max:		Coordinates of the maximum point
 	center:		Coordinates of the point at the center of the map
@@ -104,12 +105,13 @@ typedef struct s_vars {
 	int				width;
 	int				height;
 	double			zoom;
+	double			zhight;
 	t_point			min;
 	t_point			max;
 	t_point			center;
 	t_point			*points;
 	t_fdf_img		img;
-	t_projection	projection;
+	t_projection	proj;
 }				t_vars;
 
 /* Initialisers */

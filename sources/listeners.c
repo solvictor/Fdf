@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 03:59:00 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/15 15:47:38 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/16 19:14:19 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 static void	handle_move(int key, t_vars *vars)
 {
 	if (key == XK_w)
-		vars->center.dy -= 20;
-	else if (key == XK_a)
-		vars->center.dx -= 20;
-	else if (key == XK_s)
 		vars->center.dy += 20;
-	else if (key == XK_d)
+	else if (key == XK_a)
 		vars->center.dx += 20;
+	else if (key == XK_s)
+		vars->center.dy -= 20;
+	else if (key == XK_d)
+		vars->center.dx -= 20;
 	else if (key == XK_r)
 	{
 		if (vars->rotation == 360)
@@ -46,9 +46,16 @@ int	on_key(int key, void *p)
 	t_vars	*vars;
 
 	vars = (t_vars *) p;
+	handle_move(key, vars);
 	if (key == XK_Escape)
 		on_destroy(p);
-	handle_move(key, vars);
+	else if (key == XK_equal)
+		vars->zhight++;
+	else if (key == XK_minus)
+		vars->zhight--;
+	else
+		return (0);
+	update_display(vars);
 	return (0);
 }
 

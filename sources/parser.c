@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:52:23 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/14 15:02:59 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/16 17:57:36 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int	parse_line(char *line, int x, t_point **map, t_point **prev)
 	y = 0;
 	while (line[i] == ' ')
 		i++;
-	while (line[i] != '\n' && line[i])
+	while (line[i] && line[i] != '\n')
 	{
 		new = new_point(x, y);
 		if (!new)
@@ -113,7 +113,7 @@ t_point	*parse_map(int fd)
 	{
 		line = uppercase(line);
 		if (!parse_line(line, x, &points, &prev))
-			return (NULL);
+			return (free(line), NULL);
 		free(line);
 		line = get_next_line(fd);
 		x++;

@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:02:44 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/15 12:56:40 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/16 18:47:27 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,13 @@ void	fdf_init(int fd, char *file_name, t_vars *vars)
 	if (!vars->points)
 		(ft_putendl_fd("No data found.", 1), clean_exit(vars, 0));
 	vars->zoom = 1;
+	vars->zhight = DISTANCE;
 	vars->rotation = 0;
-	vars->projection = new_proj("Isometric)", &project, 30, 30);
+	vars->proj = new_proj("Isometric)", &project, 30, 30);
 	vars->id = mlx_init();
 	if (!vars->id)
 		(ft_putendl_fd("MLX initialization failed.", 1), clean_exit(vars, 1));
 	mlx_get_screen_size(vars->id, &vars->width, &vars->height);
-	vars->height -= 140;
 	vars->center.dx = vars->width / 2;
 	vars->center.dy = vars->height / 2;
 	vars->title = ft_strjoin("Fdf vegret -> ", file_name);
