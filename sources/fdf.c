@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:15 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/16 19:19:29 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/19 16:32:47 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,9 @@ static int	fdf_open(int argc, char *argv[])
 }
 
 /* TODO
-Fdf
-- degrade entre les points
-- bresenham correct
-- norme
 
-Makefile
-- Message quand ya nothing to do
-- Changer les couleurs
+Isometrification en utilisant le x et y des points pour fix la rotation
+
 */
 int	main(int argc, char *argv[])
 {

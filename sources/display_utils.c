@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 18:10:34 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/16 18:47:27 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/19 15:35:39 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,11 @@ void	put_pixel_img(t_fdf_img *img, int x, int y, unsigned int color)
 {
 	char	*dst;
 
-	if (x < 0 || x >= img->width || y < 0 || y >= img->height)
-		return ;
-	dst = img->data + (y * img->line_size + x * (img->bpp / 8));
-	*(unsigned int *) dst = color;
+	if (x >= 0 && y >= 0 && x < img->width && y < img->height)
+	{
+		dst = img->data + (y * img->line_size + x * img->bpp);
+		*(unsigned int *) dst = color;
+	}
 }
 
 void	show_controls(t_vars *vars)
@@ -63,19 +64,19 @@ void	center(t_vars *vars, int x, int y)
 	}
 }
 
-void	rotate(t_point *points, t_point *center, double angle)
+void	rotate(t_point *points, double angle)
 {
-	double	x;
-	double	y;
+	double			x;
+	double			y;
+	const double	c = cos(angle);
+	const double	s = sin(angle);
 
 	while (points)
 	{
 		x = points->dx;
 		y = points->dy;
-		points->dx = (x - center->dx) * cos(angle)
-			- (y - center->dy) * sin(angle) + center->dx;
-		points->dy = (x - center->dx) * sin(angle)
-			+ (y - center->dy) * cos(angle) + center->dy;
+		points->dx = x * c - y * s;
+		points->dy = x * s + y * c;
 		points = points->next;
 	}
 }

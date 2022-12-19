@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:02:44 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/16 18:47:27 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/19 12:56:11 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	image_init(t_vars *vars)
 			&vars->img.bpp,
 			&vars->img.line_size,
 			&vars->img.endian);
+	vars->img.bpp /= 8;
 }
 
 void	fdf_init(int fd, char *file_name, t_vars *vars)

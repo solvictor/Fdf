@@ -6,17 +6,17 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 23:17:51 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/14 17:47:53 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/19 12:46:12 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	ft_abs(int n)
+double	dabs(double d)
 {
-	if (n < 0)
-		return (-n);
-	return (n);
+	if (d < 0)
+		return (-d);
+	return (d);
 }
 
 void	pointsclear(t_point **lst)

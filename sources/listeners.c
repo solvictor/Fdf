@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 03:59:00 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/16 19:14:19 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/19 16:15:40 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	handle_move(int key, t_vars *vars)
 	else if (key == XK_r)
 	{
 		if (vars->rotation == 360)
-			vars->rotation = 0;
+			vars->rotation = -2;
 		vars->rotation += 2;
 	}
 	else if (key == XK_l)
