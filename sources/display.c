@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:07:29 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/19 16:33:05 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/22 16:52:25 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ void	update_display(t_vars *vars)
 	addz(vars);
 	extremums_init(vars);
 	center(vars, vars->center.dx, vars->center.dy);
-	project2(vars);
+	project(vars);
 	image_init(vars);
 	render_points(vars);
 	mlx_put_image_to_window(vars->id, vars->win, vars->img.id, 0, 0);

@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:15 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/19 16:32:47 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/22 17:04:51 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,21 +35,18 @@ static int	fdf_open(int argc, char *argv[])
 
 	if (argc != 2)
 	{
-		ft_putstr_fd("Usage : ", 1);
-		ft_putstr_fd(argv[0], 1);
-		ft_putendl_fd(" <filename>", 1);
+		ft_printf("Usage : %s <filename>\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
 	if (!endswith(argv[1], ".fdf"))
 	{
-		ft_putendl_fd("Invalid file format, please provide .fdf", 1);
+		ft_printf("Invalid file format, please provide .fdf\n");
 		exit(EXIT_FAILURE);
 	}
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
 	{
-		ft_putstr_fd("No file ", 1);
-		ft_putendl_fd(argv[1], 1);
+		ft_printf("No file %s\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
 	return (fd);

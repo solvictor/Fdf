@@ -6,18 +6,22 @@ LIBFT		= libft
 MINILIBX	= minilibx-linux
 SRC_DIR		= sources/
 OBJ_DIR		= objects/
-CC			= cc
+CC			= clang
 CFLAGS		= -Wall -Wextra -Werror
 RM			= rm -f
 SMAKE		= make --no-print-directory
 
 # Colors
 
-DEF_COLOR 	=	\033[0;39m
+END			=	\033[0m
+BOLD		=	\033[1m
+UNDER		=	\033[4m
+REV			=	\033[7m
+DEF_COLOR	=	\033[0;39m
 GRAY		=	\033[0;90m
-RED 		=	\033[0;91m
+RED			=	\033[0;91m
 GREEN		=	\033[0;92m
-YELLOW 		=	\033[0;93m
+YELLOW		=	\033[0;93m
 BLUE		=	\033[0;94m
 MAGENTA		=	\033[0;95m
 CYAN		=	\033[0;96m
@@ -40,16 +44,16 @@ all:		$(NAME)
 bonus:		all
 
 $(NAME):	$(OBJ)
-			@$(SMAKE) -C $(LIBFT) bonus
+			@$(SMAKE) -C $(LIBFT)
 			@$(SMAKE) -C ${MINILIBX}
 			@$(CC) $(OBJ) -L $(LIBFT) -L $(MINILIBX) -lX11 -lXext  -lmlx -lft -lm -o $@
-			@echo "$(GREEN)Fdf compiled!$(DEF_COLOR)"
+			@echo "$(GREEN)$(BOLD)Fdf compiled!$(DEF_COLOR)"
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJF)
 			@echo "\033[1A                                                     "
 			@echo -n "\033[1A"
 			@echo "$(YELLOW)Compiling: $< $(DEF_COLOR)"
-			@$(CC) $(CFLAGS) -I $(INCLUDE) -I $(LIBFT) -I $(MINILIBX) -c $< -o $@
+			@$(CC) $(CFLAGS) -I $(INCLUDE) -I $(LIBFT)/includes -I $(MINILIBX) -c $< -o $@
 
 $(OBJF):
 			@mkdir -p $(OBJ_DIR)
@@ -66,9 +70,24 @@ fclean:		clean
 			@echo "$(CYAN)Fdf executable files cleaned!$(DEF_COLOR)"
 
 re:			fclean all
-			@echo "$(GREEN)Cleaned and rebuilt everything for Fdf!$(DEF_COLOR)"
 
 norm:
-			@norminette $(SRC) $(INCLUDE) $(LIBFT) | grep -v Norme -B1 || true
+			@norminette $(SRC) $(INCLUDE) | grep -v Norme > tmp
+			@while read -r line; do \
+				if [ -z "$${line##*OK*}" ]; then \
+					printf "$(GREEN)"; \
+					printf "$$line"; \
+					printf "$(END)\n"; \
+				else \
+					if [ -z "$${line##*Error*}" ]; then \
+						printf "$(RED)"; \
+						printf "$$line"; \
+						printf "$(END)\n"; \
+					else \
+						printf "$$line"; \
+					fi \
+				fi \
+			done < tmp
+			@$(RM) tmp
 
-.PHONY:		all clean fclean re norm home
+.PHONY:		all clean fclean re norm

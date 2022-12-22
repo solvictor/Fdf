@@ -74,26 +74,23 @@ fclean:		clean
 
 re:			fclean all
 
-colorize:
-	@while read -r line; do \
-		if [ -z "$${line##*OK*}" ]; then \
-			printf "$(GREEN)"; \
-			printf "$$line"; \
-			printf "$(END)\n"; \
-		else \
-			if [ -z "$${line##*Error*}" ]; then \
-				printf "$(RED)"; \
-				printf "$$line"; \
-				printf "$(END)\n"; \
-			else \
-				printf "$$line"; \
-			fi \
-		fi \
-	done < tmp
-
 norm:
 			@norminette $(SRC) $(INCLUDE) | grep -v Norme > tmp
-			@$(SMAKE) colorize
+			@while read -r line; do \
+				if [ -z "$${line##*OK*}" ]; then \
+					printf "$(GREEN)"; \
+					printf "$$line"; \
+					printf "$(END)\n"; \
+				else \
+					if [ -z "$${line##*Error*}" ]; then \
+						printf "$(RED)"; \
+						printf "$$line"; \
+						printf "$(END)\n"; \
+					else \
+						printf "$$line"; \
+					fi \
+				fi \
+			done < tmp
 			@$(RM) tmp
 
 .PHONY:		all clean fclean re norm
