@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 19:44:46 by vegret            #+#    #+#             */
-/*   Updated: 2022/11/08 18:10:00 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/21 13:10:01 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*ft_strchr(const char *s, int c)
 			return ((char *) s);
 		s++;
 	}
-	if (c == 0)
+	if ((unsigned char) c == '\0')
 		return ((char *) s);
 	return (NULL);
 }

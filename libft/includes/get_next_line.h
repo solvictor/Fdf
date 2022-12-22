@@ -6,14 +6,14 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 15:25:56 by vegret            #+#    #+#             */
-/*   Updated: 2022/11/26 00:09:18 by vegret           ###   ########.fr       */
+/*   Updated: 2022/11/20 20:43:17 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1024
+#  define BUFFER_SIZE 8
 # endif
 # ifndef MAX_FILES
 #  define MAX_FILES 1024

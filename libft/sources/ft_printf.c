@@ -1,27 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/31 20:11:27 by vegret            #+#    #+#             */
-/*   Updated: 2022/08/31 20:11:27 by vegret           ###   ########.fr       */
+/*   Created: 2022/09/14 17:14:40 by vegret            #+#    #+#             */
+/*   Updated: 2022/12/21 16:49:47 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
+#include "ft_printf.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+int	ft_printf(const char *format, ...)
 {
-	int	i;
+	int		i;
+	int		count;
+	t_flag	flag;
+	va_list	args;
 
-	if (!n)
-		return (0);
 	i = 0;
-	while (--n && s1[i] && s2[i] && s1[i] == s2[i])
+	count = 0;
+	va_start(args, format);
+	while (format[i])
 	{
+		if (format[i] == '%' && format[i + 1])
+		{
+			i++;
+			i += handle_flags(format + i, &flag);
+			count += handle_conv(format + i, args, &flag);
+		}
+		else
+			count += write(1, &format[i], 1);
 		i++;
 	}
-	return ((unsigned char) s1[i] - s2[i]);
+	va_end(args);
+	return (count);
 }

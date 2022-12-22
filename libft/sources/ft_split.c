@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 17:02:22 by vegret            #+#    #+#             */
-/*   Updated: 2022/11/08 13:08:46 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/21 13:27:01 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	*free_tab2d(char **tab)
 	i = 0;
 	if (tab)
 	{
-		while (*tab[i])
+		while (tab[i])
 		{
 			free(tab[i]);
 			i++;
