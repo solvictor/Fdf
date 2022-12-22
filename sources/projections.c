@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:27:41 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/23 00:06:43 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/23 00:29:20 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,6 @@ void	update_projection(t_vars *vars)
 			vars->proj = new_proj("Military)", &project, 45, 45);
 		else if (!ft_strncmp(vars->proj.name, "Military)", 10))
 			vars->proj = new_proj("Dimetric)", &project, 15, 15);
-		else if (!ft_strncmp(vars->proj.name, "Dimetric)", 10))
-			vars->proj = new_proj("Trimetric)", &project, 15, 45);
-		else if (!ft_strncmp(vars->proj.name, "Trimetric)", 11))
-			vars->proj = new_proj("Cavalier)", &project, 0, 45);
 		else
 			vars->proj = new_proj("Isometric)", &project, 30, 30);
 	}
