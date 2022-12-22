@@ -53,6 +53,8 @@ bonus:		all
 
 $(NAME):	$(OBJ)
 			@$(AR) $(NAME) $(OBJ)
+			@echo "\033[1A                                                     "
+			@echo -n "\033[1A"
 			@echo "$(GREEN)$(BOLD)libft compiled!$(DEF_COLOR)"
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJF)
@@ -75,22 +77,13 @@ fclean:		clean
 re:			fclean all
 
 norm:
-			@norminette $(SRC) $(INCLUDE) | grep -v Norme > tmp
-			@while read -r line; do \
-				if [ -z "$${line##*OK*}" ]; then \
-					printf "$(GREEN)"; \
-					printf "$$line"; \
-					printf "$(END)\n"; \
-				else \
-					if [ -z "$${line##*Error*}" ]; then \
-						printf "$(RED)"; \
-						printf "$$line"; \
-						printf "$(END)\n"; \
-					else \
-						printf "$$line"; \
-					fi \
-				fi \
-			done < tmp
-			@$(RM) tmp
+			@norminette $(SRC) $(INCLUDE) | grep -v Norme | awk '{\
+			if ($$NF == "OK!") { \
+				print "$(GREEN)"$$0"$(END)" \
+			} else if ($$NF == "Error!") { \
+				print "$(RED)$(BOLD)"$$0"$(END)" \
+			} else if ($$1 == "Error:") { \
+				print "$(LIGHT_RED)"$$0"$(END)" \
+			} else { print }}'
 
 .PHONY:		all clean fclean re norm
