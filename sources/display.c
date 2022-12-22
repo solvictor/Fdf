@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:07:29 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/22 16:52:25 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/23 00:07:36 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,55 +88,17 @@ static int	render_points(t_vars *vars)
 	return (0);
 }
 
-static void	addz(t_vars *vars)
-{
-	t_point	*point;
-
-	point = vars->points;
-	while (point)
-	{
-		point->dy -= point->z * vars->zhight * vars->zoom;
-		point = point->next;
-	}
-}
-
-//void	project2(t_vars *vars)
-//{
-//	t_point			*points;
-//	t_point			*tmp;
-//	const double	angles[3] = {sin(vars->proj.angle1) * DISTANCE * vars->zoom,
-//		sin(vars->proj.angle2) * DISTANCE * vars->zoom,
-//		cos(vars->proj.angle2) * DISTANCE * vars->zoom};
-
-//	points = vars->points;
-//	while (points)
-//	{
-//		tmp = points;
-//		while (tmp)
-//		{
-//			tmp->dx = (tmp->dx) + tmp->dy * angles[2];
-//			tmp->dy = (tmp->dy);
-//			//tmp->dx = 20 + tmp->x * 20;
-//			//tmp->dy = 20 + tmp->y * 20;
-//			tmp = tmp->nextx;
-//		}
-//		points = points->nexty;
-//	}
-//}
-
 void	update_display(t_vars *vars)
 {
 	if (!vars->id)
 		return ;
 	if (vars->img.id)
 		mlx_destroy_image(vars->id, vars->img.id);
+	rotate(vars->points, vars->rotation * M_PI / 180);
 	if (vars->proj.f)
 		vars->proj.f(vars);
-	rotate(vars->points, vars->rotation * M_PI / 180);
-	addz(vars);
 	extremums_init(vars);
 	center(vars, vars->center.dx, vars->center.dy);
-	project(vars);
 	image_init(vars);
 	render_points(vars);
 	mlx_put_image_to_window(vars->id, vars->win, vars->img.id, 0, 0);

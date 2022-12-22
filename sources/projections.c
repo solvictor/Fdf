@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:27:41 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/19 16:20:58 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/23 00:06:43 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,29 +45,18 @@ void	update_projection(t_vars *vars)
 
 void	project(t_vars *vars)
 {
-	t_point			*prec;
 	t_point			*points;
-	t_point			*last_first;
-	const double	angles[3] = {sin(vars->proj.angle1) * DISTANCE * vars->zoom,
-		sin(vars->proj.angle2) * DISTANCE * vars->zoom,
-		cos(vars->proj.angle2) * DISTANCE * vars->zoom};
+	const double	angles[2] = {
+		sin(vars->proj.angle1) * DISTANCE * vars->zoom,
+		cos(vars->proj.angle2) * DISTANCE * vars->zoom
+	};
 
 	points = vars->points;
-	last_first = points;
-	prec = points;
-	points = points->next;
 	while (points)
 	{
-		if (points->y)
-			points->dy = prec->dy - angles[1];
-		else
-		{
-			prec = last_first;
-			last_first = points;
-			points->dy = prec->dy + angles[0];
-		}
-		points->dx = prec->dx + angles[2];
-		prec = points;
+		points->dx = (points->x + points->y) * angles[1];
+		points->dy = (points->x - points->y) * angles[0];
+		points->dy -= points->z * vars->zhight * vars->zoom;
 		points = points->next;
 	}
 }
