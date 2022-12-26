@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:56 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/19 13:57:11 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/27 00:36:41 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,6 @@ double			dabs(double d);
 void			project(t_vars *vars);
 void			update_projection(t_vars *vars);
 void			center(t_vars *vars, int x, int y);
-void			rotate(t_point *points, double angle);
 t_projection	new_proj(
 					char *name, void (*f)(t_vars *),
 					double angle1, double angle2

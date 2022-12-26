@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 18:10:34 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/19 15:35:39 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/27 00:36:51 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,22 +61,5 @@ void	center(t_vars *vars, int x, int y)
 		point->dx += x;
 		point->dy += y;
 		point = point->next;
-	}
-}
-
-void	rotate(t_point *points, double angle)
-{
-	double			x;
-	double			y;
-	const double	c = cos(angle);
-	const double	s = sin(angle);
-
-	while (points)
-	{
-		x = points->dx;
-		y = points->dy;
-		points->dx = x * c - y * s;
-		points->dy = x * s + y * c;
-		points = points->next;
 	}
 }

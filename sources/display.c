@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:07:29 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/23 00:07:36 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/27 00:36:55 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ void	update_display(t_vars *vars)
 		return ;
 	if (vars->img.id)
 		mlx_destroy_image(vars->id, vars->img.id);
-	rotate(vars->points, vars->rotation * M_PI / 180);
 	if (vars->proj.f)
 		vars->proj.f(vars);
 	extremums_init(vars);

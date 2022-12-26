@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 12:50:15 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/22 17:04:51 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/27 00:36:47 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,6 @@ static int	fdf_open(int argc, char *argv[])
 	return (fd);
 }
 
-/* TODO
-
-Isometrification en utilisant le x et y des points pour fix la rotation
-
-*/
 int	main(int argc, char *argv[])
 {
 	int		fd;

@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:27:41 by vegret            #+#    #+#             */
-/*   Updated: 2022/12/23 00:29:20 by vegret           ###   ########.fr       */
+/*   Updated: 2022/12/27 00:37:44 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,24 @@ void	update_projection(t_vars *vars)
 void	project(t_vars *vars)
 {
 	t_point			*points;
-	const double	angles[2] = {
+	const double	angles[4] = {
 		sin(vars->proj.angle1) * DISTANCE * vars->zoom,
-		cos(vars->proj.angle2) * DISTANCE * vars->zoom
+		cos(vars->proj.angle2) * DISTANCE * vars->zoom,
+		cos(vars->rotation * M_PI / 180),
+		sin(vars->rotation * M_PI / 180)
 	};
+	double			x;
+	double			y;
 
 	points = vars->points;
 	while (points)
 	{
-		points->dx = (points->x + points->y) * angles[1];
-		points->dy = (points->x - points->y) * angles[0];
+		x = points->x + points->y;
+		y = points->x - points->y;
+		points->dx = x * angles[2] - y * angles[3];
+		points->dy = x * angles[3] + y * angles[2];
+		points->dx = points->dx * angles[1];
+		points->dy = points->dy * angles[0];
 		points->dy -= points->z * vars->zhight * vars->zoom;
 		points = points->next;
 	}
