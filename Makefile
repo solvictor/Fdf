@@ -51,7 +51,7 @@ $(NAME):	$(OBJ)
 			@echo "$(GREEN)$(BOLD)Fdf compiled!$(DEF_COLOR)"
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJF)
-			@echo "\033[1A                                                     "
+			@echo -n "\033[1A                                                  "
 			@echo -n "\033[1A"
 			@echo "$(YELLOW)Compiling: $< $(DEF_COLOR)"
 			@$(CC) $(CFLAGS) -I $(INCLUDE) -I $(LIBFT)/includes -I $(MINILIBX) -c $< -o $@
